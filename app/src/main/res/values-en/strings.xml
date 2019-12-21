@@ -15,23 +15,23 @@
 
     <!--Botones main -->
     <string name="boton_reproducir_video">Play a video</string>
-    <string name="boton_reproducir_audio">Play a music</string>
+    <string name="boton_reproducir_audio">Play music</string>
 
 
     <!-- Activity Video & Audio-->
     <string name="reproductor_video">Video player</string>
     <string name="reproducir_audio">Music player</string>
     <string name="opciones_video">What do you want to see?</string>
-    <string name="opciones_musica">What do you want to listen?</string>
+    <string name="opciones_musica">What do you want to listen to?</string>
 
     <!--botones -->
-    <string name="video_ejemplo">Play example video</string>
-    <string name="video_seleeccion">Chooise a video</string>
-    <string name="musica_ejemplo">Play example music</string>
-    <string name="musica_seleeccion">Chooise a music</string>
+    <string name="video_ejemplo">Play video sample</string>
+    <string name="video_seleeccion">Choose a video file</string>
+    <string name="musica_ejemplo">Play music sample</string>
+    <string name="musica_seleeccion">Choose a music file</string>
 
     <!-- Otros  -->
-    <string name="titulo_video_ejemplo">Chooise a video</string>
+    <string name="titulo_video_ejemplo">Choose a video</string>
     <string name="seccion_construcción">Section under construction</string>
 
 
