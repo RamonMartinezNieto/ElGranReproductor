@@ -1,7 +1,6 @@
 package com.foc.reproductorvideo;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
@@ -12,7 +11,16 @@ import android.widget.Button;
 
 import com.foc.reproductorvideo.video.opciones_reproducir_video;
 import com.foc.reproductorvideo.music.opciones_reproducir_musica;
+/**
+ * @author Ramón Martínez Nieto
+ * Dni: 43188174-A
+ * Programación multimedia de Dispositivos Móviles
+ * Tarea 4
+ */
 
+/**
+ * Activity principal, tiene dos botones a través de los cuales vamos a reproducir vídeo o música
+ */
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
     Button btnMusica;
@@ -51,7 +59,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     /**
-     * todo refactorizar, copiado en las otras activities
+     * TODO - Éste método está repetido, no he conseguido extraerlo para que sea común, startActivity()
+     * TODO - aun que le pase todo por parámetros.
+     * Ejecuta una transicción para versiones más modernas y otra para versiones más antiguas (son muy similares)
      * @param c class a la que se va a hacer la transicción
      */
     private void cambioActivity(Context cont, Class c, View v){

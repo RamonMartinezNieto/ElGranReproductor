@@ -2,29 +2,25 @@ package com.foc.reproductorvideo.video;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
 import android.content.res.Configuration;
-import android.content.res.Resources;
-import android.icu.text.UnicodeSetSpanner;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
-import android.view.SurfaceHolder;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.GridView;
 import android.widget.MediaController;
-import android.widget.Toast;
 import android.widget.VideoView;
+import java.util.ArrayList;
 
-import com.foc.reproductorvideo.MainActivity;
 import com.foc.reproductorvideo.R;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 
+/**
+ * @author Ramón Martínez Nieto
+ * Dni: 43188174-A
+ * Programación multimedia de Dispositivos Móviles
+ * Tarea 4
+ */
 /**
  * Clase para reproducir un vídeo de ejemplo como recurso, esta clase diferencía entre el modo
  * PORTRAIT Y LANDSCAPE, bisacamente si está en LANDSCAPE se ejecuta un vídeo de ejemplo. Si está
@@ -41,7 +37,7 @@ public class reproductor_video_ejemplo extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reproductor_video_ejemplo);
 
-        //El GridView solo se cargará en modo protrait
+        //IMPORTANTE: El GridView solo se cargará en modo PORTRAIT
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
 
             //GridView para ver los vídeo de ejemplo
@@ -60,6 +56,7 @@ public class reproductor_video_ejemplo extends AppCompatActivity {
             gvEjemplos.setAdapter(ave);
             gvEjemplos.requestFocus();
 
+            //Asigno OnItemClickListener para cuando pulse un vídeo se cargue ese vídeo
             gvEjemplos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -71,7 +68,7 @@ public class reproductor_video_ejemplo extends AppCompatActivity {
             });
     }
 
-        // Cargar Video principal Path del mp4 como recurso
+        // Cargar Video principal Path del mp4 como recurso, en cualquier modo.
         String pathVideoFileMuestra = "android.resource://" + getPackageName() + "/" + R.raw.video1;
 
         vvMuestra = (VideoView) findViewById(R.id.videoViewMuestra);

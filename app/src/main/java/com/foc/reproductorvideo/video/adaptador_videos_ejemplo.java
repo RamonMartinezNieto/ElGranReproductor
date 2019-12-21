@@ -8,17 +8,27 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 import android.widget.VideoView;
+import java.util.ArrayList;
 
 import com.foc.reproductorvideo.R;
 
-import java.util.ArrayList;
 
+/**
+ * @author Ramón Martínez Nieto
+ * Dni: 43188174-A
+ * Programación multimedia de Dispositivos Móviles
+ * Tarea 4
+ */
+/**
+ * Clase Adaptador para cargar el GridView con vídeos de ejemplo
+ */
 public class adaptador_videos_ejemplo extends BaseAdapter {
 
     private Context contexto;
     private int layout;
     private ArrayList<video> misVideos;
 
+    //Constructor del adaptador
     public adaptador_videos_ejemplo(Context c, int layout, ArrayList<video> listaVideos){
         this.contexto = c;
         this.layout = layout;
@@ -53,7 +63,7 @@ public class adaptador_videos_ejemplo extends BaseAdapter {
         //cargo la lista
         View v = convertView;
 
-        //inflo la vista que nos llega con el layout personalizado
+        //inflo la vista que nos llega a través del layout personalizado
         LayoutInflater li = LayoutInflater.from(this.contexto);
         v = li.inflate(R.layout.adaptador_videos_ejemplos,null);
 
@@ -61,18 +71,19 @@ public class adaptador_videos_ejemplo extends BaseAdapter {
         String nombreActual = misVideos.get(posicion).getNombre();
         int idVideo = misVideos.get(posicion).getIdVideo();
 
-        //Path del mp4 como recurso
+        //Construyo el Path del mp4 como recurso al que adjuntaré el int del R.raw.videoX que lo cojo
+        //a través de la clase video
         // Cargar Video principal Path del mp4 como recurso
         String pathVideoFileMuestra = "android.resource://com.foc.reproductorvideo/" + idVideo;
 
-        //Busco los textView que hay en mi layout personalizado
+        //Busco el textView que hay en mi layout personalizado y el VideoView
         TextView tvEjemplosNombresVideos = v.findViewById(R.id.tvEjemplosNombresVideos);
         VideoView vvEjemplosAdaptador = v.findViewById(R.id.vvEjemplosAdaptador);
 
-        //asigno los datos a los diferentes TextView
+        //asigno los datos al TextView
         tvEjemplosNombresVideos.setText(nombreActual);
 
-        //VideoView
+        //Le indico la Uri que tendrá cada VideoView y lo inicio
         vvEjemplosAdaptador.setVideoURI(Uri.parse(pathVideoFileMuestra));
         vvEjemplosAdaptador.start();
 
