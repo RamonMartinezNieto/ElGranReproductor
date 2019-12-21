@@ -21,16 +21,16 @@
             <TextView
                 android:id="@+id/textView2"
                 style="@style/subtitulo_land"
-                android:text="@string/opciones_musica" />
+                android:text="@string/seccion_construcción" />
 
             <Button
                 android:id="@+id/buttonMusicaEjemplo"
-                style="@style/botones_musica"
+                style="@style/botones_musica_disable"
                 android:text="@string/musica_ejemplo" />
 
             <Button
                 android:id="@+id/buttonMusicaSeleccion"
-                style="@style/botones_musica"
+                style="@style/botones_musica_disable"
                 android:text="@string/musica_seleeccion" />
 
             <include layout="@layout/datos_autor"/>

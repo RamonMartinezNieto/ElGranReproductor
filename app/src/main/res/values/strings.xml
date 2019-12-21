@@ -29,10 +29,9 @@
     <string name="musica_ejemplo">Reproducir música de ejemplo</string>
     <string name="musica_seleeccion">Seleccionar música</string>
 
-
-    <!-- Otros layouts -->
+    <!-- Otros  -->
     <string name="titulo_video_ejemplo">Seleccione un vídeo</string>
-
+    <string name="seccion_construcción">Sección en consutrcción</string>
 
 
 </resources>

@@ -78,6 +78,11 @@
         <item name="android:layout_height">wrap_content</item>
     </style>
 
+    <!-- Botoones que están dissable -->
+    <style name="botones_musica_disable" parent="botones_musica">
+        <item name="android:backgroundTint">#999999</item>
+    </style>
+
     <!-- Botones musica extends botonesPrincipales-->
     <style name="botones_musica" parent="botonesPrincipales">
         <item name="android:drawableRight">@drawable/music_player</item>
