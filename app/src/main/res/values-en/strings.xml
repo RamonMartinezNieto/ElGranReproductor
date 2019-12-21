@@ -1,0 +1,38 @@
+<!--Translate Strings to English -->
+<resources>
+    <string name="app_name">The Great Player</string>
+
+    <!-- Strings main -->
+    <string name="titulo">The Great Player</string>
+    <string name="main_subtitulo">What do you want to do?</string>
+
+    <string name="autor">Ramón Martínez Nieto</string>
+    <string name="autor_dni">DNI: 43188174Q</string>
+    <string name="autor_tarea">PMDM - Task 4</string>
+
+    <!-- Descripción imagen de fondo -->
+    <string name="imagen_fondo_descripcion">Cool background image.</string>
+
+    <!--Botones main -->
+    <string name="boton_reproducir_video">Play a video</string>
+    <string name="boton_reproducir_audio">Play a music</string>
+
+
+    <!-- Activity Video & Audio-->
+    <string name="reproductor_video">Video player</string>
+    <string name="reproducir_audio">Music player</string>
+    <string name="opciones_video">What do you want to see?</string>
+    <string name="opciones_musica">What do you want to listen?</string>
+
+    <!--botones -->
+    <string name="video_ejemplo">Play example video</string>
+    <string name="video_seleeccion">Chooise a video</string>
+    <string name="musica_ejemplo">Play example music</string>
+    <string name="musica_seleeccion">Chooise a music</string>
+
+    <!-- Otros  -->
+    <string name="titulo_video_ejemplo">Chooise a video</string>
+    <string name="seccion_construcción">Section under construction</string>
+
+
+</resources>
