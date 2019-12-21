@@ -1,0 +1,23 @@
+<!-- Translate to French using Google Translate xD -->
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">"Le grand joueur "</string>
+    <string name="autor">Ramón Martínez Nieto</string>
+    <string name="autor_dni">DNI: 43188174Q</string>
+    <string name="autor_tarea">PMDM - Tâche 4</string>
+    <string name="boton_reproducir_audio">"Jouer de la musique "</string>
+    <string name="boton_reproducir_video">"Lire une vidéo "</string>
+    <string name="imagen_fondo_descripcion">"Image d'arrière-plan cool. "</string>
+    <string name="main_subtitulo">Qu\'est-ce que tu veux faire?</string>
+    <string name="musica_ejemplo">"Lire un extrait de musique "</string>
+    <string name="musica_seleeccion">"Sélectionnez la musique "</string>
+    <string name="opciones_musica">"Que veux-tu entendre? "</string>
+    <string name="opciones_video">"Que voulez-vous voir? "</string>
+    <string name="reproducir_audio">"Jouer de la musique "</string>
+    <string name="reproductor_video">"Lecteur vidéo "</string>
+    <string name="seccion_construcción">"Section en construction "</string>
+    <string name="titulo">"Le grand joueur "</string>
+    <string name="titulo_video_ejemplo">"Sélectionnez une vidéo "</string>
+    <string name="video_ejemplo">"Lire un exemple de vidéo "</string>
+    <string name="video_seleeccion">"Sélectionnez une vidéo "</string>
+</resources>

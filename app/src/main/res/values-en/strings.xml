@@ -10,10 +10,10 @@
     <string name="autor_dni">DNI: 43188174Q</string>
     <string name="autor_tarea">PMDM - Task 4</string>
 
-    <!-- Descripción imagen de fondo -->
+    <!-- Description background image-->
     <string name="imagen_fondo_descripcion">Cool background image.</string>
 
-    <!--Botones main -->
+    <!--main buttons-->
     <string name="boton_reproducir_video">Play a video</string>
     <string name="boton_reproducir_audio">Play music</string>
 
@@ -24,13 +24,13 @@
     <string name="opciones_video">What do you want to see?</string>
     <string name="opciones_musica">What do you want to listen to?</string>
 
-    <!--botones -->
+    <!--buttons-->
     <string name="video_ejemplo">Play video sample</string>
     <string name="video_seleeccion">Choose a video file</string>
     <string name="musica_ejemplo">Play music sample</string>
     <string name="musica_seleeccion">Choose a music file</string>
 
-    <!-- Otros  -->
+    <!-- Others  -->
     <string name="titulo_video_ejemplo">Choose a video</string>
     <string name="seccion_construcción">Section under construction</string>
 
