@@ -1,0 +1,38 @@
+<resources>
+    <string name="app_name">El Gran Reproductor</string>
+
+    <!-- Strings main -->
+    <string name="titulo">El Gran Reproductor</string>
+    <string name="main_subtitulo">¿Qué deseas hacer?</string>
+
+    <string name="autor">Ramón Martínez Nieto</string>
+    <string name="autor_dni">DNI: 43188174Q</string>
+    <string name="autor_tarea">PMDM - Tarea 4</string>
+
+    <!-- Descripción imagen de fondo -->
+    <string name="imagen_fondo_descripcion">Imagen de fondo chula, gratuita para uso personal</string>
+
+    <!--Botones main -->
+    <string name="boton_reproducir_video">Reproducir un vídeo</string>
+    <string name="boton_reproducir_audio">Reproducir música</string>
+
+
+    <!-- Activity Video & Audio-->
+    <string name="reproductor_video">Reproductor de vídeo</string>
+    <string name="reproducir_audio">Reproducir música</string>
+    <string name="opciones_video">¿Qué quieres ver?</string>
+    <string name="opciones_musica">¿Qué quieres escuchar?</string>
+
+    <!--botones -->
+    <string name="video_ejemplo">Reproducir video de ejemplo</string>
+    <string name="video_seleeccion">Seleccionar un vídeo</string>
+    <string name="musica_ejemplo">Reproducir música de ejemplo</string>
+    <string name="musica_seleeccion">Seleccionar música</string>
+
+
+    <!-- Otros layouts -->
+    <string name="titulo_video_ejemplo">Seleccione un vídeo</string>
+
+
+
+</resources>

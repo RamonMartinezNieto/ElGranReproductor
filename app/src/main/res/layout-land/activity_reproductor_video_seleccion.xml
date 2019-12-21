@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".video.reproductor_video_seleccion">
+
+
+    <include layout="@layout/imagen_fondo_land"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+            <VideoView
+                android:id="@+id/videoViewSeleccion"
+                style="@style/videoView_land" />
+
+        <Button
+            android:id="@+id/buttonSeleccionarFlotante"
+            style="@style/botones_video_flotante" />
+
+        <Button
+            android:id="@+id/buttonSeleccionarTexto"
+            style="@style/botones_video_flotante"
+            android:text="@string/video_seleeccion" />
+
+
+    </RelativeLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+

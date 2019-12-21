@@ -1,0 +1,143 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+
+    </style>
+
+    <!-- Estilo para el titulo principal -->
+    <style name="titulos" parent="@android:style/TextAppearance.Medium">
+        <item name="android:layout_marginTop">100dp</item>
+        <item name="android:layout_marginLeft">10dp</item>
+        <item name="android:layout_marginRight">10dp</item>
+        <item name="android:layout_marginBottom">45dp</item>
+        <item name="android:fontFamily">sans-serif-smallcaps</item>
+        <item name="android:textColor">#143E83</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">55sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:shadowColor">#3F51B5</item>
+        <item name="android:shadowDx">2</item>
+        <item name="android:shadowDy">4</item>
+        <item name="android:shadowRadius">20</item>
+    </style>
+
+    <!-- Estilo imagen de fondo -->
+    <style name="imagenFondo" >
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:scaleX">1</item>
+        <item name="android:scaleY">2.2</item>
+        <item name="android:alpha">0.3</item>
+        <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:scaleType">fitCenter</item>
+        <item name="android:src">@drawable/imagen_fondo</item>
+    </style>
+
+    <!-- Estilo imagen de fondo modo landscape -->
+
+    <style name="imagenFondoLandscape" parent="imagenFondo">
+        <item name="android:scaleX">2.5</item>
+        <item name="android:scaleY">1</item>
+    </style>
+
+
+    <!-- Estilo para el subtitulo -->
+    <style name="subtitulo" parent="TextAppearance.AppCompat.Medium">
+        <item name="android:layout_margin">10dp</item>
+        <item name="android:padding">10dp</item>
+        <item name="android:fontFamily">sans-serif-smallcaps</item>
+        <item name="android:textColor">#2E3B88</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">25sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <!-- Estilo botones, ojo con el parent que es importante de quien se extiende -->
+    <style name="botonesPrincipales" parent="Widget.AppCompat.Button">
+        <item name="android:focusable">true</item>
+        <item name="android:clickable">true</item>
+        <item name="android:backgroundTint">#D23967C4</item>
+        <item name="android:height">65dp</item>
+        <item name="android:textColor">#D2FFFFFF</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">17sp</item>
+        <item name="android:layout_marginTop">5dp</item>
+        <item name="android:layout_marginLeft">25dp</item>
+        <item name="android:layout_marginRight">25dp</item>
+        <item name="android:layout_marginBottom">5dp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <!-- Botones musica extends botonesPrincipales-->
+    <style name="botones_musica" parent="botonesPrincipales">
+        <item name="android:drawableRight">@drawable/music_player</item>
+    </style>
+
+    <!-- Botones video extends botonesPrincipales-->
+    <style name="botones_video" parent="botonesPrincipales">
+        <item name="android:drawableRight">@drawable/video_player</item>
+    </style>
+
+
+    <!-- Botones video flotantes extends botones_video-->
+    <style name="botones_video_flotante" parent="botones_video">
+        <item name="android:drawableRight">@drawable/video_player</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_alignParentTop">false</item>
+        <item name="android:layout_alignParentBottom">true</item>
+        <item name="android:layout_alignParentLeft">false</item>
+        <item name="android:layout_alignParentRight">true</item>
+
+    </style>
+
+    <!-- Estilo para el texto del autor -->
+    <style name="textoAutor" parent="@android:style/TextAppearance.Medium">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">15dp</item>
+        <item name="android:fontFamily">sans-serif-smallcaps</item>
+        <item name="android:gravity">right</item>
+        <item name="android:textColor">#252525</item>
+    </style>
+
+
+    <!-- Estilo para el titulo principal landscape-->
+    <style name="titulos_land" parent="titulos">
+        <item name="android:layout_marginTop">25dp</item>
+        <item name="android:layout_marginBottom">0dp</item>
+    </style>
+
+    <!-- Estilo para el subtitulo principal landscape-->
+    <style name="subtitulo_land" parent="subtitulo">
+        <item name="android:padding">0dp</item>
+    </style>
+
+    <!-- Estilo VideoView modo portrair -->
+    <style name="videoView_portrait">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">250dp</item>
+        <item name="android:layout_gravity">center</item>
+    </style>
+
+    <!-- Estilo para VideoView en modo landscape, NOTA: Solo funciona usando RelativeLayout como contenedor -->
+    <style name="videoView_land">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:layout_alignParentTop">true</item>
+        <item name="android:layout_alignParentBottom">true</item>
+        <item name="android:layout_alignParentLeft">true</item>
+        <item name="android:layout_alignParentRight">true</item>
+    </style>
+</resources>

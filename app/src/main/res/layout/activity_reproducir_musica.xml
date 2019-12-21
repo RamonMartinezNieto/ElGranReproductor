@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".music.opciones_reproducir_musica">
+
+    <include layout="@layout/imagen_fondo"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/textViewTitulo"
+                style="@style/titulos"
+                android:text="@string/boton_reproducir_audio" />
+
+            <TextView
+                android:id="@+id/textView2"
+                style="@style/subtitulo"
+                android:text="@string/opciones_musica" />
+
+            <Button
+                android:id="@+id/buttonMusicaEjemplo"
+                style="@style/botones_musica"
+                android:text="@string/musica_ejemplo"
+                android:enabled="false"/>
+
+            <Button
+                android:id="@+id/buttonMusicaSeleccion"
+                style="@style/botones_musica"
+                android:text="@string/musica_seleeccion"
+                android:enabled="false"/>
+
+            <include layout="@layout/datos_autor"/>
+
+
+        </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="bottom">
+
+    <TextView
+        android:id="@+id/textView3"
+        style="@style/textoAutor"
+        android:text="@string/autor" />
+
+    <TextView
+        android:id="@+id/textView4"
+        style="@style/textoAutor"
+        android:text="@string/autor_dni" />
+
+    <TextView
+        android:id="@+id/textView5"
+        style="@style/textoAutor"
+        android:text="@string/autor_tarea" />
+
+</LinearLayout>
