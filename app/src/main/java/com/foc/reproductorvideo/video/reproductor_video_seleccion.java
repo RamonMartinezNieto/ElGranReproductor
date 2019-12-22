@@ -42,6 +42,7 @@ public class reproductor_video_seleccion extends AppCompatActivity implements Vi
     VideoView vv = null;
 
     Button btnSeleccionTexto;
+    //Solo para landscape
     Button btnSeleccionFlotante;
 
     //Variable que controla X del botón
@@ -167,7 +168,6 @@ public class reproductor_video_seleccion extends AppCompatActivity implements Vi
         }
     }
 
-
     /**
      * Método para buscar el vídeo a cargar y ejecutarlo
      */
@@ -183,7 +183,17 @@ public class reproductor_video_seleccion extends AppCompatActivity implements Vi
             startActivityForResult(Intent.createChooser(i, "Seleccione un vídeo"), ID_RESULTADO_VIDEO);
         } catch (ActivityNotFoundException anfe) {
             //Si no tiene explorador de archivos se le comunica que debe instalar uno
-            Toast.makeText(this, "Debes de instalar un explorador de archivos", Toast.LENGTH_SHORT).show();
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage("Necesitas un explorador de archivos para poder seleccionar un vídeo.").setTitle("Error falta de explorador");
+            //Botón neutral del dialog ¿realmente es necesario el OnClickListener)
+            builder.setNeutralButton("Entendido", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    //El botón no hace nada, solo es para que acepte y se vaya el AlertDialog
+                }
+            });
+            AlertDialog dialog = builder.create();
+            dialog.show();
         }
     }
 
@@ -194,7 +204,6 @@ public class reproductor_video_seleccion extends AppCompatActivity implements Vi
      * @param datos
      */
     protected void onActivityResult(int cod, int resultado, Intent datos){
-
         switch (cod){
             case ID_RESULTADO_VIDEO:
                 if(resultado == RESULT_OK){
@@ -211,25 +220,6 @@ public class reproductor_video_seleccion extends AppCompatActivity implements Vi
                     }
                 }
                 break;
-        }
-    }
-
-
-
-
-    /**
-     * todo el método funciona y oculta la barra ede estado, pero no se muy bien como integrarlo para toda la activity
-     * todo - ya que al realizar cualquier acción vuelve a ser visible
-     * @deprecated
-     */
-    public void ocultarBarraSuperior(){
-        //Oculto la barra superior
-        if (Build.VERSION.SDK_INT < 16) {
-            getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                    WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        } else{
-            View decorView = getWindow().getDecorView();
-            decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN);
         }
     }
 }

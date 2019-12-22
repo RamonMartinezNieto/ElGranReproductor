@@ -55,7 +55,6 @@ public class opciones_reproducir_video extends AppCompatActivity implements View
         }
     }
 
-
     /**
      * TODO - Éste método está repetido, no he conseguido extraerlo para que sea común, startActivity()
      * TODO - aun que le pase todo por parámetros.
@@ -75,5 +74,4 @@ public class opciones_reproducir_video extends AppCompatActivity implements View
             startActivity(i);
         }
     }
-
 }

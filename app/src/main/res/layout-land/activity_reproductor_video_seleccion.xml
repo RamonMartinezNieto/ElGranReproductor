@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".video.reproductor_video_seleccion">
 
-
     <include layout="@layout/imagen_fondo_land"/>
 
     <RelativeLayout
@@ -25,7 +24,6 @@
             android:id="@+id/buttonSeleccionarTexto"
             style="@style/botones_video_flotante"
             android:text="@string/video_seleeccion" />
-
 
     </RelativeLayout>
 

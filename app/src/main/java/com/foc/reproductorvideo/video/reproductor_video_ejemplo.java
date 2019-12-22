@@ -14,7 +14,6 @@ import java.util.ArrayList;
 
 import com.foc.reproductorvideo.R;
 
-
 /**
  * @author Ramón Martínez Nieto
  * Dni: 43188174-A
@@ -36,6 +35,17 @@ public class reproductor_video_ejemplo extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reproductor_video_ejemplo);
+
+        // Cargar Video principal Path del mp4 como recurso, en cualquier modo.
+        String pathVideoFileMuestra = "android.resource://" + getPackageName() + "/" + R.raw.video1;
+
+        vvMuestra = (VideoView) findViewById(R.id.videoViewMuestra);
+
+        vvMuestra.setMediaController(new MediaController(vvMuestra.getContext()));
+
+        vvMuestra.setVideoURI(Uri.parse(pathVideoFileMuestra));
+
+        vvMuestra.start();
 
         //IMPORTANTE: El GridView solo se cargará en modo PORTRAIT
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
@@ -66,18 +76,6 @@ public class reproductor_video_ejemplo extends AppCompatActivity {
                     vvMuestra.start();
                 }
             });
-    }
-
-        // Cargar Video principal Path del mp4 como recurso, en cualquier modo.
-        String pathVideoFileMuestra = "android.resource://" + getPackageName() + "/" + R.raw.video1;
-
-        vvMuestra = (VideoView) findViewById(R.id.videoViewMuestra);
-
-        vvMuestra.setMediaController(new MediaController(vvMuestra.getContext()));
-
-        vvMuestra.setVideoURI(Uri.parse(pathVideoFileMuestra));
-
-        vvMuestra.start();
-
+        }
     }
 }

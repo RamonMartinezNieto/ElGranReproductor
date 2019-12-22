@@ -34,7 +34,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //Cargo los botones y les añado el listener
         btnVideo = (Button) findViewById(R.id.buttonVideo);
         btnVideo.setOnClickListener(this);
-
         btnMusica = (Button) findViewById(R.id.buttonMusica);
         btnMusica.setOnClickListener(this);
 
