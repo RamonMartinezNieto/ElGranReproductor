@@ -25,9 +25,10 @@
 
             <Button
                 android:id="@+id/buttonMusicaEjemplo"
-                style="@style/botones_musica_disable"
+                style="@style/botones_musica"
                 android:text="@string/musica_ejemplo"
-                android:enabled="false"/>
+
+                />
 
             <Button
                 android:id="@+id/buttonMusicaSeleccion"
