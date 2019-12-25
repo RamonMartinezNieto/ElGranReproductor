@@ -24,7 +24,9 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.MediaController;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 import android.widget.VideoView;
 
@@ -44,12 +46,14 @@ public class reproductor_video_seleccion extends AppCompatActivity implements Vi
     //Variables con ID del resultado de permisos y de la carga de vídeo
     private final int ID_RESULTADO_VIDEO = 8888;
     private final int ID_PERMISOS_READ_EXTERNAL = 9999;
-
     VideoView vv = null;
-
     Button btnSeleccionTexto;
     //Solo para landscape
     Button btnSeleccionFlotante;
+
+    //para control del fondo
+    ImageView imageViewFondo;
+    FrameLayout frameLayoutImagenFondo;
 
     //Variable que controla X del botón
     int btnSeleccionTextoX;
@@ -58,6 +62,12 @@ public class reproductor_video_seleccion extends AppCompatActivity implements Vi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reproductor_video_seleccion);
+
+        //Busco el fondo para tratarlo posteriormente
+        imageViewFondo = (ImageView) findViewById(R.id.imageViewFondo);
+        //Busco el FrameLayout para tratarlo posteriormnete
+        frameLayoutImagenFondo = (FrameLayout) findViewById(R.id.frameLayoutImagenFondo);
+
 
         //Botón flotante grande
         btnSeleccionTexto = (Button) findViewById(R.id.buttonSeleccionarTexto);
@@ -212,15 +222,6 @@ public class reproductor_video_seleccion extends AppCompatActivity implements Vi
     protected void onActivityResult(int cod, int resultado, Intent datos){
 
 
-
-        //Hago visible el fondo por si lo hubiera cambiado
-        ImageView imageViewFondo = (ImageView) findViewById(R.id.imageViewFondo);
-        imageViewFondo.setVisibility(View.VISIBLE);
-
-        //Busco el FrameLayout del fondo para reestablecer su color
-        FrameLayout frameLayoutImagenFondo = (FrameLayout) findViewById(R.id.frameLayoutImagenFondo);
-        frameLayoutImagenFondo.setBackgroundColor(0x00FFFFFF);
-
         switch (cod){
             case ID_RESULTADO_VIDEO:
                 if(resultado == RESULT_OK){
@@ -235,15 +236,17 @@ public class reproductor_video_seleccion extends AppCompatActivity implements Vi
                         //Establezco un MediaController
                         vv.setMediaController(new MediaController(this));
 
-                        Toast.makeText(vv.getContext(), "rotación " + saberRotacion(uri),Toast.LENGTH_SHORT).show();
-
                         //Cuando la pantalla está en modo portrait
                         if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT){
 
                             //El vídeo está en modo portrait
                             if(saberRotacion(uri) == 90){
+
                                 imageViewFondo.setVisibility(View.INVISIBLE);
                                 frameLayoutImagenFondo.setBackgroundColor(Color.parseColor("#000000"));
+                            } else if (saberRotacion(uri) == 0 ){
+                                imageViewFondo.setVisibility(View.VISIBLE);
+                                frameLayoutImagenFondo.setBackgroundColor(0x00FFFFFF);
                             }
                         }
                         //El VideoView tendrá el foco

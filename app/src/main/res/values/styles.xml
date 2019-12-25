@@ -157,11 +157,10 @@
         <item name="android:padding">0dp</item>
     </style>
 
-    <!-- Estilo VideoView modo portrair <item name="android:layout_height">250dp</item> -->
+    <!-- Estilo VideoView modo portrair  -->
     <style name="videoView_portrait">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
-        <item name="android:layout_gravity">center</item>
     </style>
 
     <!-- Estilo para VideoView en modo landscape, NOTA: Solo funciona usando RelativeLayout como contenedor -->
