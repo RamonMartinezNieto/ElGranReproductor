@@ -111,13 +111,15 @@ public class reproductor_video_seleccion extends AppCompatActivity implements Vi
                         }
                     } else if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT){
                         if (what == MediaPlayer.MEDIA_INFO_VIDEO_RENDERING_START) {
-                            //todo ojito, aquí hay que controlar si el vídeo está en 90 o no
                             //Animación para que se vaya el botón con texto
                             if(uri != null){
                                 int rotacion = saberRotacion(uri);
 
+                                //Ojo, si el botón pequeño no estaba en su posición hay que ponersela
                                 if(rotacion == 90){
                                     transiccionSalidaBotonGrande();
+                                } else if (btnSeleccionFlotante.getX() != 400) {
+                                    transiccionEntradaBotonGrande();
                                 }
                             }
                             return true;
