@@ -6,15 +6,15 @@ package com.foc.reproductorvideo.video;
  * Tarea 4
  */
 /**
- * Clase video al que se le asigna un id (se le pasa como R.raw.videoX
+ * Clase Video al que se le asigna un id (se le pasa como R.raw.videoX
  * y un nombre que será el título
  */
-public class video {
+public class Video {
 
     private int idVideo;
     private String nombre;
 
-    public video(String nombre, int idVideo){
+    public Video(String nombre, int idVideo){
         this.idVideo = idVideo;
         this.nombre = nombre;
     }

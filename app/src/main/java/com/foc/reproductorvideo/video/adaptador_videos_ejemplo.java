@@ -26,10 +26,10 @@ public class adaptador_videos_ejemplo extends BaseAdapter {
 
     private Context contexto;
     private int layout;
-    private ArrayList<video> misVideos;
+    private ArrayList<Video> misVideos;
 
     //Constructor del adaptador
-    public adaptador_videos_ejemplo(Context c, int layout, ArrayList<video> listaVideos){
+    public adaptador_videos_ejemplo(Context c, int layout, ArrayList<Video> listaVideos){
         this.contexto = c;
         this.layout = layout;
         this.misVideos = listaVideos;
@@ -72,7 +72,7 @@ public class adaptador_videos_ejemplo extends BaseAdapter {
         int idVideo = misVideos.get(posicion).getIdVideo();
 
         //Construyo el Path del mp4 como recurso al que adjuntaré el int del R.raw.videoX que lo cojo
-        //a través de la clase video
+        //a través de la clase Video
         // Cargar Video principal Path del mp4 como recurso
         String pathVideoFileMuestra = "android.resource://com.foc.reproductorvideo/" + idVideo;
 

@@ -3,14 +3,14 @@ package com.foc.reproductorvideo.music;
 /**
  * Clase para las canciones (se usa para las canciones de ejemplo)
  */
-public class cancion {
+public class Cancion {
 
     String titulo;
     String subtitulo;
     int idCancion;
     int idMiniatura;
 
-    public cancion(String titulo, String subtitulo, int idCancion, int idMiniatura) {
+    public Cancion(String titulo, String subtitulo, int idCancion, int idMiniatura) {
         this.titulo = titulo;
         this.subtitulo = subtitulo;
         this.idCancion = idCancion;

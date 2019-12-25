@@ -11,7 +11,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".music.activity_musica_ejemplo"></activity>
+        <activity android:name=".music.activity_musica_seleccion"></activity>
+        <activity android:name=".music.activity_musica_ejemplo" />
         <activity android:name=".video.reproductor_video_seleccion" />
         <activity android:name=".video.reproductor_video_ejemplo" />
         <activity android:name=".music.opciones_reproducir_musica" />

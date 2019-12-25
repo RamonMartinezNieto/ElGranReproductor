@@ -7,25 +7,40 @@
 
     <ImageView
         android:id="@+id/imageViewMiniatura"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
+        style="@style/imageView_portrait"
         app:srcCompat="@drawable/video_player" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:layout_weight="1">
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/textViewTitulo"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:text="Titulo"/>
 
         <TextView
             android:id="@+id/textViewSubtitulo"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:text="Subtitulo"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/buttonPlayMusic"
+                style="@style/botones_musica_play" />
+
+            <Button
+                android:id="@+id/buttonPauseMusic"
+                style="@style/botones_musica_pause" />
+        </LinearLayout>
+
+
     </LinearLayout>
 </LinearLayout>

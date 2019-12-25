@@ -78,23 +78,34 @@
         <item name="android:layout_height">wrap_content</item>
     </style>
 
-    <!-- Botoones que están dissable -->
-    <style name="botones_musica_disable" parent="botones_musica">
-        <item name="android:backgroundTint">#999999</item>
-    </style>
-
     <!-- Botones musica extends botonesPrincipales-->
     <style name="botones_musica" parent="botonesPrincipales">
         <item name="android:drawableRight">@drawable/music_player</item>
     </style>
 
-    <!-- Botones video extends botonesPrincipales-->
+    <style name="botones_musica_play" parent="botonesPrincipales">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:height">20dp</item>
+        <item name="android:width">20dp</item>
+        <item name="android:text">></item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_margin">0dp</item>
+        <item name="android:padding">0dp</item>
+    </style>
+
+
+    <style name="botones_musica_pause" parent="botones_musica_play">
+        <item name="android:text">||</item>
+    </style>
+
+    <!-- Botones Video extends botonesPrincipales-->
     <style name="botones_video" parent="botonesPrincipales">
         <item name="android:drawableRight">@drawable/video_player</item>
     </style>
 
 
-    <!-- Botones video flotantes extends botones_video-->
+
+    <!-- Botones Video flotantes extends botones_video-->
     <style name="botones_video_flotante" parent="botones_video">
         <item name="android:drawableRight">@drawable/video_player</item>
         <item name="android:layout_width">wrap_content</item>
@@ -145,4 +156,13 @@
         <item name="android:layout_alignParentLeft">true</item>
         <item name="android:layout_alignParentRight">true</item>
     </style>
+
+    <style name="imageView_portrait">
+        <item name="android:layout_width">200dp</item>
+        <item name="android:layout_height">150dp</item>
+        <item name="android:layout_margin">0dp</item>
+        <item name="android:padding">0dp</item>
+
+    </style>
+
 </resources>

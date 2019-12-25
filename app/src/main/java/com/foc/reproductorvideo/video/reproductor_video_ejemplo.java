@@ -55,11 +55,11 @@ public class reproductor_video_ejemplo extends AppCompatActivity {
 
             //Lista de vídeos cargada manualmente, lo suyo sería leer lo que hay en el directorio, pero como
             //son vídeos de ejemplo se puede hacer así.
-            final ArrayList<video> misVideos = new ArrayList<>();
-            misVideos.add(new video("Cascadas", R.raw.video1));
-            misVideos.add(new video("Café", R.raw.video2));
-            misVideos.add(new video("Disco", R.raw.video3));
-            misVideos.add(new video("Partículas", R.raw.video4));
+            final ArrayList<Video> misVideos = new ArrayList<>();
+            misVideos.add(new Video("Cascadas", R.raw.video1));
+            misVideos.add(new Video("Café", R.raw.video2));
+            misVideos.add(new Video("Disco", R.raw.video3));
+            misVideos.add(new Video("Partículas", R.raw.video4));
 
             //Llamo a mi adaptador
             adaptador_videos_ejemplo ave = new adaptador_videos_ejemplo(this, R.layout.adaptador_videos_ejemplos, misVideos);

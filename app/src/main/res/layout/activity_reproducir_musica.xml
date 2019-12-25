@@ -27,14 +27,13 @@
                 android:id="@+id/buttonMusicaEjemplo"
                 style="@style/botones_musica"
                 android:text="@string/musica_ejemplo"
-
                 />
 
             <Button
                 android:id="@+id/buttonMusicaSeleccion"
-                style="@style/botones_musica_disable"
+                style="@style/botones_musica"
                 android:text="@string/musica_seleeccion"
-                android:enabled="false"/>
+                />
 
             <include layout="@layout/datos_autor"/>
 

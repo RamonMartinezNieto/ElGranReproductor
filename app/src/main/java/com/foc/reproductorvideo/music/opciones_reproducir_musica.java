@@ -22,6 +22,7 @@ import com.foc.reproductorvideo.R;
 public class opciones_reproducir_musica extends AppCompatActivity implements View.OnClickListener {
 
     private Button btnMusicaEjemplo;
+    private Button btnMusicaSeleccion;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,19 +31,21 @@ public class opciones_reproducir_musica extends AppCompatActivity implements Vie
 
         btnMusicaEjemplo = (Button) findViewById(R.id.buttonMusicaEjemplo);
         btnMusicaEjemplo.setOnClickListener(this);
+
+        btnMusicaSeleccion = (Button) findViewById(R.id.buttonMusicaSeleccion);
+        btnMusicaSeleccion.setOnClickListener(this);
+
     }
 
     @Override
     public void onClick(View v) {
-
         switch (v.getId()) {
-
             case (R.id.buttonMusicaEjemplo):
                 cambioActivity(this, activity_musica_ejemplo.class, v);
-
                 break;
-
-
+            case (R.id.buttonMusicaSeleccion):
+                cambioActivity(this, activity_musica_seleccion.class, v);
+                break;
         }
     }
 
