@@ -29,10 +29,10 @@ public class activity_musica_ejemplo extends AppCompatActivity  {
 
 
         ArrayList<Cancion> listaCanciones = new ArrayList<>();
-        listaCanciones.add(new Cancion("Cancion 1","subt canción 1", R.raw.cancion1, R.drawable.cancion1 ));
-        listaCanciones.add(new Cancion("Cancion 2","subt canción 2", R.raw.cancion2, R.drawable.cancion2 ));
-        listaCanciones.add(new Cancion("Cancion 3","subt canción 3", R.raw.cancion3, R.drawable.cancion3 ));
-        listaCanciones.add(new Cancion("Cancion 4","subt canción 4", R.raw.cancion4, R.drawable.cancion5 ));
+        listaCanciones.add(new Cancion("Grupo 1","Nombre canción 1", R.raw.cancion1, R.drawable.cancion1 ));
+        listaCanciones.add(new Cancion("Grupo 2","Nombre canción 2", R.raw.cancion2, R.drawable.cancion2 ));
+        listaCanciones.add(new Cancion("Grupo 3","Nombre canción 3", R.raw.cancion3, R.drawable.cancion3 ));
+        listaCanciones.add(new Cancion("Grupo 4","Nombre canción 4", R.raw.cancion4, R.drawable.cancion5 ));
 
         adaptador_musica_ejemplo ame = new adaptador_musica_ejemplo(this, listaCanciones);
         //Nota, el ListView pierde el foco y lo ganan los botones de reproducción
