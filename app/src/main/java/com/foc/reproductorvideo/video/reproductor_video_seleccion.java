@@ -54,6 +54,8 @@ public class reproductor_video_seleccion extends AppCompatActivity implements Vi
     //para control del fondo
     ImageView imageViewFondo;
     FrameLayout frameLayoutImagenFondo;
+    ImageView imageViewFondoLand;
+    FrameLayout frameLayoutImagenFondoLand;
 
     //Variable que controla X del botón
     int btnSeleccionTextoX;
@@ -65,8 +67,10 @@ public class reproductor_video_seleccion extends AppCompatActivity implements Vi
 
         //Busco el fondo para tratarlo posteriormente
         imageViewFondo = (ImageView) findViewById(R.id.imageViewFondo);
+        imageViewFondoLand = (ImageView) findViewById(R.id.imagenViewFondoLandscape);
         //Busco el FrameLayout para tratarlo posteriormnete
         frameLayoutImagenFondo = (FrameLayout) findViewById(R.id.frameLayoutImagenFondo);
+        frameLayoutImagenFondoLand = (FrameLayout) findViewById(R.id.frameLayoutImagenFondoLandscape);
 
 
         //Botón flotante grande
@@ -234,6 +238,7 @@ public class reproductor_video_seleccion extends AppCompatActivity implements Vi
                         //Establezco un MediaController
                         vv.setMediaController(new MediaController(this));
 
+                        //Diferente configuración según orientación
                         configuracionSegunOrientacion(uri);
 
                         //El VideoView tendrá el foco
@@ -262,6 +267,14 @@ public class reproductor_video_seleccion extends AppCompatActivity implements Vi
                 imageViewFondo.setVisibility(View.VISIBLE);
                 frameLayoutImagenFondo.setBackgroundColor(0x00FFFFFF);
             }
+        }
+
+        if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
+            //El vídeo está en modo landscape quito el fondo y lo pongo negro por si hay "espacios" en los lados y en la parte inferior
+
+                imageViewFondoLand.setVisibility(View.INVISIBLE);
+                frameLayoutImagenFondoLand.setBackgroundColor(Color.parseColor("#000000"));
+
         }
     }
 
