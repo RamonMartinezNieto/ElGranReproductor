@@ -116,7 +116,7 @@ public class reproductor_video_seleccion extends AppCompatActivity implements Vi
                                 int rotacion = saberRotacion(uri);
 
                                 //Ojo, si el botón pequeño no estaba en su posición hay que ponersela
-                                if(rotacion == 90){
+                                if(rotacion == 90 || rotacion == 270){
                                     transiccionSalidaBotonGrande();
                                 } else if (btnSeleccionFlotante.getX() != 400) {
                                     transiccionEntradaBotonGrande();
@@ -143,7 +143,7 @@ public class reproductor_video_seleccion extends AppCompatActivity implements Vi
                         //Animación para que vuelva el botón con texto
                         int rotacion = saberRotacion(uri);
 
-                        if(rotacion == 90) {
+                        if(saberRotacion(uri) == 90 || saberRotacion(uri) == 270) {
                             transiccionEntradaBotonGrande();
                         }
                     }
@@ -300,10 +300,10 @@ public class reproductor_video_seleccion extends AppCompatActivity implements Vi
 
         if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT){
             //El vídeo está en modo portrait quito el fondo y lo pongo negro por si hay "espacios" en los lados y en la parte inferior
-            if(saberRotacion(uri) == 90){
+            if(saberRotacion(uri) == 90 || saberRotacion(uri) == 270){
                 imageViewFondo.setVisibility(View.INVISIBLE);
                 frameLayoutImagenFondo.setBackgroundColor(Color.parseColor("#000000"));
-            } else if (saberRotacion(uri) == 0 ){
+            } else if (saberRotacion(uri) == 0 || saberRotacion(uri) == 180){
                 imageViewFondo.setVisibility(View.VISIBLE);
                 frameLayoutImagenFondo.setBackgroundColor(0x00FFFFFF);
             }
