@@ -132,7 +132,10 @@
         <item name="android:layout_alignParentBottom">true</item>
         <item name="android:layout_alignParentLeft">false</item>
         <item name="android:layout_alignParentRight">true</item>
+    </style>
 
+    <style name="botones_video_flotante_portait" parent="botones_video_flotante">
+        <item name="android:layout_alignParentLeft">true</item>
     </style>
 
     <!-- Estilo para el texto del autor -->

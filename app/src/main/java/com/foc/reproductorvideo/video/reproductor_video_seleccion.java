@@ -225,10 +225,8 @@ public class reproductor_video_seleccion extends AppCompatActivity implements Vi
         switch (cod){
             case ID_RESULTADO_VIDEO:
                 if(resultado == RESULT_OK){
-
                     //Cargo el URI de la respuesta del intent
                     Uri uri = datos.getData();
-
                     //Para finalizar cargo el vídeo a través del URI
                     if(vv != null){
                         vv.setVideoURI(uri);
@@ -236,19 +234,8 @@ public class reproductor_video_seleccion extends AppCompatActivity implements Vi
                         //Establezco un MediaController
                         vv.setMediaController(new MediaController(this));
 
-                        //Cuando la pantalla está en modo portrait
-                        if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT){
+                        configuracionSegunOrientacion(uri);
 
-                            //El vídeo está en modo portrait
-                            if(saberRotacion(uri) == 90){
-
-                                imageViewFondo.setVisibility(View.INVISIBLE);
-                                frameLayoutImagenFondo.setBackgroundColor(Color.parseColor("#000000"));
-                            } else if (saberRotacion(uri) == 0 ){
-                                imageViewFondo.setVisibility(View.VISIBLE);
-                                frameLayoutImagenFondo.setBackgroundColor(0x00FFFFFF);
-                            }
-                        }
                         //El VideoView tendrá el foco
                         vv.requestFocus();
                         //Ejecuto el vídeo
@@ -256,6 +243,25 @@ public class reproductor_video_seleccion extends AppCompatActivity implements Vi
                     }
                 }
                 break;
+        }
+    }
+
+
+    /**
+     * Método que realiza diferentes accioens según la rotación del vídeo
+     * @param uri
+     */
+    private void configuracionSegunOrientacion(Uri uri){
+
+        if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT){
+            //El vídeo está en modo portrait quito el fondo y lo pongo negro por si hay "espacios" en los lados y en la parte inferior
+            if(saberRotacion(uri) == 90){
+                imageViewFondo.setVisibility(View.INVISIBLE);
+                frameLayoutImagenFondo.setBackgroundColor(Color.parseColor("#000000"));
+            } else if (saberRotacion(uri) == 0 ){
+                imageViewFondo.setVisibility(View.VISIBLE);
+                frameLayoutImagenFondo.setBackgroundColor(0x00FFFFFF);
+            }
         }
     }
 

@@ -27,7 +27,7 @@
 
         <Button
             android:id="@+id/buttonSeleccionarTexto"
-            style="@style/botones_video_flotante"
+            style="@style/botones_video_flotante_portait"
             android:text="@string/video_seleeccion" />
 
     </RelativeLayout>
