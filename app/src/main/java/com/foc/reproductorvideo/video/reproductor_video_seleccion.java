@@ -211,7 +211,7 @@ public class reproductor_video_seleccion extends AppCompatActivity implements Vi
      */
     protected void onActivityResult(int cod, int resultado, Intent datos){
 
-        int videoRotation = 0;
+
 
         //Hago visible el fondo por si lo hubiera cambiado
         ImageView imageViewFondo = (ImageView) findViewById(R.id.imageViewFondo);
@@ -235,17 +235,13 @@ public class reproductor_video_seleccion extends AppCompatActivity implements Vi
                         //Establezco un MediaController
                         vv.setMediaController(new MediaController(this));
 
-                        MediaMetadataRetriever md = new MediaMetadataRetriever();
-                        md.setDataSource(this,datos.getData());
-                        videoRotation = Integer.parseInt(md.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_ROTATION));
-
-                        Toast.makeText(vv.getContext(), "rotación " + videoRotation,Toast.LENGTH_SHORT).show();
+                        Toast.makeText(vv.getContext(), "rotación " + saberRotacion(uri),Toast.LENGTH_SHORT).show();
 
                         //Cuando la pantalla está en modo portrait
                         if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT){
 
                             //El vídeo está en modo portrait
-                            if(videoRotation == 90){
+                            if(saberRotacion(uri) == 90){
                                 imageViewFondo.setVisibility(View.INVISIBLE);
                                 frameLayoutImagenFondo.setBackgroundColor(Color.parseColor("#000000"));
                             }
@@ -258,5 +254,18 @@ public class reproductor_video_seleccion extends AppCompatActivity implements Vi
                 }
                 break;
         }
+    }
+
+    /**
+     * Método para saber los grados en los que está grabado el vídeo
+     * @param path
+     * @return
+     */
+    private int saberRotacion(Uri path){
+        int videoRotation = 0;
+        MediaMetadataRetriever md = new MediaMetadataRetriever();
+        md.setDataSource(this,path);
+        videoRotation = Integer.parseInt(md.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_ROTATION));
+        return videoRotation;
     }
 }
