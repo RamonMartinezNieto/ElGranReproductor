@@ -11,13 +11,19 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.MediaController;
 import android.widget.Toast;
 import android.widget.VideoView;
@@ -204,17 +210,48 @@ public class reproductor_video_seleccion extends AppCompatActivity implements Vi
      * @param datos
      */
     protected void onActivityResult(int cod, int resultado, Intent datos){
+
+        int videoRotation = 0;
+
+        //Hago visible el fondo por si lo hubiera cambiado
+        ImageView imageViewFondo = (ImageView) findViewById(R.id.imageViewFondo);
+        imageViewFondo.setVisibility(View.VISIBLE);
+
+        //Busco el FrameLayout del fondo para reestablecer su color
+        FrameLayout frameLayoutImagenFondo = (FrameLayout) findViewById(R.id.frameLayoutImagenFondo);
+        frameLayoutImagenFondo.setBackgroundColor(0x00FFFFFF);
+
         switch (cod){
             case ID_RESULTADO_VIDEO:
                 if(resultado == RESULT_OK){
+
                     //Cargo el URI de la respuesta del intent
                     Uri uri = datos.getData();
 
                     //Para finalizar cargo el vídeo a través del URI
                     if(vv != null){
                         vv.setVideoURI(uri);
+
                         //Establezco un MediaController
                         vv.setMediaController(new MediaController(this));
+
+                        MediaMetadataRetriever md = new MediaMetadataRetriever();
+                        md.setDataSource(this,datos.getData());
+                        videoRotation = Integer.parseInt(md.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_ROTATION));
+
+                        Toast.makeText(vv.getContext(), "rotación " + videoRotation,Toast.LENGTH_SHORT).show();
+
+                        //Cuando la pantalla está en modo portrait
+                        if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT){
+
+                            //El vídeo está en modo portrait
+                            if(videoRotation == 90){
+                                imageViewFondo.setVisibility(View.INVISIBLE);
+                                frameLayoutImagenFondo.setBackgroundColor(Color.parseColor("#000000"));
+                            }
+                        }
+                        //El VideoView tendrá el foco
+                        vv.requestFocus();
                         //Ejecuto el vídeo
                         vv.start();
                     }

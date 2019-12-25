@@ -8,23 +8,20 @@
 
     <include layout="@layout/imagen_fondo"/>
 
-    <LinearLayout
+    <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="match_parent">
 
         <VideoView
             android:id="@+id/videoViewSeleccion"
-            style="@style/videoView_portrait" />
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
 
-            <Button
-                android:id="@+id/buttonSeleccionarTexto"
-                style="@style/botones_video"
-                android:text="@string/video_seleeccion"/>
+        <Button
+            android:id="@+id/buttonSeleccionarTexto"
+            style="@style/botones_video_flotante"
+            android:text="@string/video_seleeccion" />
 
-        <include layout="@layout/datos_autor"/>
-
-
-    </LinearLayout>
+    </RelativeLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
