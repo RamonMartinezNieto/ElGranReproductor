@@ -18,6 +18,7 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
@@ -57,6 +58,8 @@ public class reproductor_video_seleccion extends AppCompatActivity implements Vi
     ImageView imageViewFondoLand;
     FrameLayout frameLayoutImagenFondoLand;
 
+    Uri uri = null;
+
     //Variable que controla X del botón
     int btnSeleccionTextoX;
 
@@ -85,13 +88,11 @@ public class reproductor_video_seleccion extends AppCompatActivity implements Vi
         /**
          * Acciones a realizar si está en modo LANDSCAPE (solo en este modo habrá dos botones)
          */
-        if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-
             //Cargo el botón flotante pequeño que hay en el layout LANDSCAPE
             btnSeleccionFlotante = (Button) findViewById(R.id.buttonSeleccionarFlotante);
             btnSeleccionFlotante.setOnClickListener(this);
             //Le pongo una X fuera de la pantalla, para que no se vea al inicio
-            btnSeleccionFlotante.setX(300);
+            btnSeleccionFlotante.setX(400);
 
             /**
              * Listener para indicar que el VideoView está cargado para reproducirse cambiará los botones a
@@ -101,18 +102,26 @@ public class reproductor_video_seleccion extends AppCompatActivity implements Vi
                 @Override
                 public boolean onInfo(MediaPlayer mp, int what, int extra) {
 
-                    //Si está en modo RENDERING_START se ejecuta la animación de cambio al botón pequeño
-                    if (what == MediaPlayer.MEDIA_INFO_VIDEO_RENDERING_START) {
-                        //Animación para que se vaya el botón con texto
-                        for (int i = 0; i < btnSeleccionTexto.getX(); i++) {
-                            btnSeleccionTexto.animate().translationX(i);
-                            btnSeleccionTextoX++;
+                    if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                        //Si está en modo RENDERING_START se ejecuta la animación de cambio al botón pequeño
+                        if (what == MediaPlayer.MEDIA_INFO_VIDEO_RENDERING_START) {
+                            //Animación para que se vaya el botón con texto
+                            transiccionSalidaBotonGrande();
+                            return true;
                         }
-                        //Animación para que aparezca el botón pequeño
-                        for (int i = 300; i > 0; i--) {
-                            btnSeleccionFlotante.animate().translationX(-i);
+                    } else if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT){
+                        if (what == MediaPlayer.MEDIA_INFO_VIDEO_RENDERING_START) {
+                            //todo ojito, aquí hay que controlar si el vídeo está en 90 o no
+                            //Animación para que se vaya el botón con texto
+                            if(uri != null){
+                                int rotacion = saberRotacion(uri);
+
+                                if(rotacion == 90){
+                                    transiccionSalidaBotonGrande();
+                                }
+                            }
+                            return true;
                         }
-                        return true;
                     }
                     return false;
                 }
@@ -124,17 +133,21 @@ public class reproductor_video_seleccion extends AppCompatActivity implements Vi
             vv.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                 @Override
                 public void onCompletion(MediaPlayer mp) {
+
+                    if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
                         //Animación para que vuelva el botón con texto
-                        for (int i = btnSeleccionTextoX; i > 0; i--) {
-                            btnSeleccionTexto.animate().translationX(-i);
+                        transiccionEntradaBotonGrande();
+                    }else if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT){
+                        //Animación para que vuelva el botón con texto
+                        int rotacion = saberRotacion(uri);
+
+                        if(rotacion == 90) {
+                            transiccionEntradaBotonGrande();
                         }
-                        //Animación para que se vaya el botón pequeño
-                        for (int i = 0; i < btnSeleccionFlotante.getX(); i++) {
-                            btnSeleccionFlotante.animate().translationX(i);
-                        }
+                    }
                 }
             });
-        }
+
     }
 
     /**
@@ -153,6 +166,32 @@ public class reproductor_video_seleccion extends AppCompatActivity implements Vi
          }
     }
 
+    /**
+     * Transicción salida botón grande y entrada pequeño
+     */
+    private void transiccionSalidaBotonGrande(){
+        for (int i = 0; i < btnSeleccionTexto.getWidth() + btnSeleccionTexto.getX(); i++) {
+            btnSeleccionTexto.animate().translationX(i);
+            btnSeleccionTextoX++;
+        }
+        //Animación para que aparezca el botón pequeño
+        for (int i = 300; i > 0; i--) {
+            btnSeleccionFlotante.animate().translationX(-i);
+        }
+    }
+
+    /**
+     * Transicción entrada botón grande y salida pequeño
+     */
+    private void transiccionEntradaBotonGrande(){
+        for (int i = btnSeleccionTextoX; i > 0; i--) {
+            btnSeleccionTexto.animate().translationX(-i);
+        }
+        //Animación para que se vaya el botón pequeño
+        for (int i = 0; i < btnSeleccionFlotante.getX(); i++) {
+            btnSeleccionFlotante.animate().translationX(i);
+        }
+    }
 
     /**
      * Respuesta a la petición de permisos de lectura
@@ -225,12 +264,11 @@ public class reproductor_video_seleccion extends AppCompatActivity implements Vi
      */
     protected void onActivityResult(int cod, int resultado, Intent datos){
 
-
         switch (cod){
             case ID_RESULTADO_VIDEO:
                 if(resultado == RESULT_OK){
                     //Cargo el URI de la respuesta del intent
-                    Uri uri = datos.getData();
+                    uri = datos.getData();
                     //Para finalizar cargo el vídeo a través del URI
                     if(vv != null){
                         vv.setVideoURI(uri);
