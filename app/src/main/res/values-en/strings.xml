@@ -34,6 +34,7 @@
     <string name="titulo_video_ejemplo">Choose a video</string>
     <string name="seccion_construcción">Section under construction</string>
     <string name="titulo_video_msuica">Choose a song</string>
+    <string name="seleccionar_cancion">Coose a song</string>
 
 
 </resources>

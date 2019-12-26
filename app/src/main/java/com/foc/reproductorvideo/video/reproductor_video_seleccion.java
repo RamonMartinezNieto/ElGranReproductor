@@ -161,7 +161,7 @@ public class reproductor_video_seleccion extends AppCompatActivity implements Vi
          //Necesito los permisos si no los tiene se le solicitarán y continuará por onRequestPermissionsResult
          if(ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
              //Llamo al método con el que buscaremos y ejecutaremos el vídeo
-             buscarVideoCargar();
+             buscarArchivoCargar();
          } else {
              //Si no tengo permisos de lectura se los pido
              ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},ID_PERMISOS_READ_EXTERNAL);
@@ -209,7 +209,7 @@ public class reproductor_video_seleccion extends AppCompatActivity implements Vi
             case(ID_PERMISOS_READ_EXTERNAL):
                 //En caso de que se le concedan los permisos se ejecutará el método para buscar el vídeo y cargarlo
                 if(grantResult[0] == (PackageManager.PERMISSION_GRANTED)){
-                    buscarVideoCargar();
+                    buscarArchivoCargar();
                 } else {
                     //Mensaje para que el usuario entienda que tiene que aceptar los permisos
                     //Construyo el dialog a través del builder
@@ -232,7 +232,7 @@ public class reproductor_video_seleccion extends AppCompatActivity implements Vi
     /**
      * Método para buscar el vídeo a cargar y ejecutarlo
      */
-    private void buscarVideoCargar(){
+    private void buscarArchivoCargar(){
         //Intent para seleccionar un contenido
         Intent i = new Intent();
         i.setAction(Intent.ACTION_GET_CONTENT);

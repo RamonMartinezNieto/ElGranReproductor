@@ -3,8 +3,6 @@ package com.foc.reproductorvideo.music;
 import android.content.Context;
 import android.media.MediaPlayer;
 import android.net.Uri;
-import android.os.AsyncTask;
-import android.os.SystemClock;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,12 +12,10 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.io.IOException;
 import java.util.ArrayList;
 
-import com.foc.reproductorvideo.MainActivity;
 import com.foc.reproductorvideo.R;
 
 
