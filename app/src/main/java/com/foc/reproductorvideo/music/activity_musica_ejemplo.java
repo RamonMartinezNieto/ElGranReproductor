@@ -1,8 +1,12 @@
 package com.foc.reproductorvideo.music;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.widget.ListView;
+import android.widget.Toast;
+
 import java.util.ArrayList;
 import com.foc.reproductorvideo.R;
 
@@ -11,6 +15,7 @@ public class activity_musica_ejemplo extends AppCompatActivity  {
 
 
     ListView lvListaMusica;
+    MediaPlayer mpMain;
 
 
     @Override
@@ -19,7 +24,7 @@ public class activity_musica_ejemplo extends AppCompatActivity  {
         setContentView(R.layout.activity_musica_ejemplo);
 
         lvListaMusica = (ListView) findViewById(R.id.listViewEjemplos);
-
+        mpMain = new MediaPlayer();
 
         ArrayList<Cancion> listaCanciones = new ArrayList<>();
         listaCanciones.add(new Cancion("Grupo 1","Nombre canción 1", R.raw.cancion1, R.drawable.cancion1 ));
@@ -27,12 +32,22 @@ public class activity_musica_ejemplo extends AppCompatActivity  {
         listaCanciones.add(new Cancion("Grupo 3","Nombre canción 3", R.raw.cancion3, R.drawable.cancion3 ));
         listaCanciones.add(new Cancion("Grupo 4","Nombre canción 4", R.raw.cancion4, R.drawable.cancion5 ));
 
-        adaptador_musica_ejemplo ame = new adaptador_musica_ejemplo(this, listaCanciones);
+        adaptador_musica_ejemplo ame = new adaptador_musica_ejemplo(this, listaCanciones, mpMain);
         //Nota, el ListView pierde el foco y lo ganan los botones de reproducción
         lvListaMusica.setAdapter(ame);
 
 
 
+
+    }
+
+    @Override
+    protected void onPause(){
+        super.onPause();
+
+        if(mpMain.isPlaying()){
+            mpMain.stop();
+        }
 
     }
 

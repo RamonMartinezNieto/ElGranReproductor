@@ -47,9 +47,10 @@ public class adaptador_musica_ejemplo extends BaseAdapter  {
     int idCancionPlayed;
 
     //Constructor del adaptador
-    public adaptador_musica_ejemplo(Context c, ArrayList<Cancion> listaCanciones){
+    public adaptador_musica_ejemplo(Context c, ArrayList<Cancion> listaCanciones, MediaPlayer mp){
         this.contexto = c;
         this.miMusica = listaCanciones;
+        this.mediaplayer = mp;
     }
 
     @Override
@@ -125,7 +126,7 @@ public class adaptador_musica_ejemplo extends BaseAdapter  {
                 } else {
 
                     if (mediaplayer == null) {
-                        mediaplayer = new MediaPlayer();
+                       // mediaplayer = new MediaPlayer();
                     } else {
 
                         //Paro y vuelvo al estado Idle
@@ -174,6 +175,7 @@ public class adaptador_musica_ejemplo extends BaseAdapter  {
         //devuelvo la vista
         return v;
     }
+
 
 
 
