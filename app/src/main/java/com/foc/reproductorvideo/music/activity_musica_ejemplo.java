@@ -6,17 +6,18 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.widget.ListView;
 import android.widget.Toast;
-
 import java.util.ArrayList;
 import com.foc.reproductorvideo.R;
 
 
+/**
+ * Clas que carga el ListView con ejemplos de canciones
+ */
 public class activity_musica_ejemplo extends AppCompatActivity  {
 
-
-    ListView lvListaMusica;
-    MediaPlayer mpMain;
-
+    private ListView lvListaMusica;
+    private MediaPlayer mpMain;
+    private Boolean pausado = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,14 +38,12 @@ public class activity_musica_ejemplo extends AppCompatActivity  {
         lvListaMusica.setAdapter(ame);
     }
 
+    //Libero el media player en onDestroy
     @Override
-    protected void onPause(){
-        super.onPause();
+    protected void onDestroy(){
+        Toast.makeText(this, "onDestroy",Toast.LENGTH_SHORT).show();
 
-        if(mpMain.isPlaying()){
-            mpMain.stop();
-        }
-
+        super.onDestroy();
+        mpMain.release();
     }
-
 }

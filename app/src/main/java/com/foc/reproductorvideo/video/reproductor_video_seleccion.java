@@ -32,6 +32,7 @@ import android.widget.Toast;
 import android.widget.VideoView;
 
 import com.foc.reproductorvideo.R;
+import com.foc.reproductorvideo.funcionalidad;
 
 /**
  * @author Ramón Martínez Nieto
@@ -45,7 +46,7 @@ import com.foc.reproductorvideo.R;
 public class reproductor_video_seleccion extends AppCompatActivity implements View.OnClickListener{
 
     //Variables con ID del resultado de permisos y de la carga de vídeo
-    private final int ID_RESULTADO_VIDEO = 8888;
+    private final int ID_RESULTADO_ARCHIVO = 8888;
     private final int ID_PERMISOS_READ_EXTERNAL = 9999;
     VideoView vv = null;
     Button btnSeleccionTexto;
@@ -57,7 +58,7 @@ public class reproductor_video_seleccion extends AppCompatActivity implements Vi
     FrameLayout frameLayoutImagenFondo;
     ImageView imageViewFondoLand;
     FrameLayout frameLayoutImagenFondoLand;
-
+    funcionalidad funcVideo;
     Uri uri = null;
 
     //Variable que controla X del botón
@@ -67,6 +68,8 @@ public class reproductor_video_seleccion extends AppCompatActivity implements Vi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reproductor_video_seleccion);
+
+        funcVideo = new funcionalidad(this, this);
 
         //Busco el fondo para tratarlo posteriormente
         imageViewFondo = (ImageView) findViewById(R.id.imageViewFondo);
@@ -161,7 +164,9 @@ public class reproductor_video_seleccion extends AppCompatActivity implements Vi
          //Necesito los permisos si no los tiene se le solicitarán y continuará por onRequestPermissionsResult
          if(ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
              //Llamo al método con el que buscaremos y ejecutaremos el vídeo
-             buscarArchivoCargar();
+            // buscarArchivoCargar();
+             funcVideo.buscarArchivoCargar();
+
          } else {
              //Si no tengo permisos de lectura se los pido
              ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},ID_PERMISOS_READ_EXTERNAL);
@@ -209,7 +214,8 @@ public class reproductor_video_seleccion extends AppCompatActivity implements Vi
             case(ID_PERMISOS_READ_EXTERNAL):
                 //En caso de que se le concedan los permisos se ejecutará el método para buscar el vídeo y cargarlo
                 if(grantResult[0] == (PackageManager.PERMISSION_GRANTED)){
-                    buscarArchivoCargar();
+                    //buscarArchivoCargar();
+                    funcVideo.buscarArchivoCargar();
                 } else {
                     //Mensaje para que el usuario entienda que tiene que aceptar los permisos
                     //Construyo el dialog a través del builder
@@ -230,35 +236,6 @@ public class reproductor_video_seleccion extends AppCompatActivity implements Vi
     }
 
     /**
-     * Método para buscar el vídeo a cargar y ejecutarlo
-     */
-    private void buscarArchivoCargar(){
-        //Intent para seleccionar un contenido
-        Intent i = new Intent();
-        i.setAction(Intent.ACTION_GET_CONTENT);
-        //selecciono cualqueir tipo de archivo si no es formáto vídeo saldrá un Dialog diciendo que no se ha podido reproducir (por defecto)
-        i.setType("*/*");
-        i.addCategory(Intent.CATEGORY_OPENABLE);
-
-        try {
-            startActivityForResult(Intent.createChooser(i, "Seleccione un vídeo"), ID_RESULTADO_VIDEO);
-        } catch (ActivityNotFoundException anfe) {
-            //Si no tiene explorador de archivos se le comunica que debe instalar uno
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setMessage("Necesitas un explorador de archivos para poder seleccionar un vídeo.").setTitle("Error falta de explorador");
-            //Botón neutral del dialog ¿realmente es necesario el OnClickListener)
-            builder.setNeutralButton("Entendido", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    //El botón no hace nada, solo es para que acepte y se vaya el AlertDialog
-                }
-            });
-            AlertDialog dialog = builder.create();
-            dialog.show();
-        }
-    }
-
-    /**
      * Resultado del intent que busca el vídeo, devuelve datos que usaremos para coger el Uri
      * @param cod
      * @param resultado
@@ -267,7 +244,7 @@ public class reproductor_video_seleccion extends AppCompatActivity implements Vi
     protected void onActivityResult(int cod, int resultado, Intent datos){
 
         switch (cod){
-            case ID_RESULTADO_VIDEO:
+            case ID_RESULTADO_ARCHIVO:
                 if(resultado == RESULT_OK){
                     //Cargo el URI de la respuesta del intent
                     uri = datos.getData();

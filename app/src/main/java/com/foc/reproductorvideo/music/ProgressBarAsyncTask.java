@@ -2,6 +2,7 @@ package com.foc.reproductorvideo.music;
 
 import android.media.MediaPlayer;
 import android.os.AsyncTask;
+import android.util.Log;
 import android.widget.ProgressBar;
 
 public class ProgressBarAsyncTask extends AsyncTask<ProgressBar, Integer, Void> {
