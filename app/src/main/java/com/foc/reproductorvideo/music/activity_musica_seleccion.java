@@ -43,6 +43,8 @@ public class activity_musica_seleccion extends AppCompatActivity implements View
     TextView txtNombreCancion;
     TextView txtNombreAlbum;
 
+    ProgressBarAsyncTask controlProgressBar;
+
     private final int ID_PERMISOS_READ_EXTERNAL = 9999;
     private final int ID_RESULTADO_ARCHIVO = 9999;
 
@@ -92,7 +94,9 @@ public class activity_musica_seleccion extends AppCompatActivity implements View
                 break;
                 case(R.id.buttonPlayMusicSeleccion):
                     mpMain.start();
-                    new ProgressBarAsyncTask(mpMain).execute(progressBar);
+                    controlProgressBar = new ProgressBarAsyncTask(mpMain);
+                    controlProgressBar.execute(progressBar);
+
                 break;
 
                 case(R.id.buttonPauseMusicSeleccion):
@@ -107,8 +111,11 @@ public class activity_musica_seleccion extends AppCompatActivity implements View
     public void onPause(){
         super.onPause();
         if(mpMain.isPlaying()) {
+            Toast.makeText(this,"llamado a onPause",Toast.LENGTH_SHORT).show();
             mpMain.stop();
             mpMain.reset();
+
+            progressBar.setProgress(0);
         }
     }
 
@@ -207,7 +214,8 @@ public class activity_musica_seleccion extends AppCompatActivity implements View
                             mpMain.start();
 
                             //Ejecuto tarea async para el progress bar le paso por constructor un MediaPLayer y el progressbar en los parámetros async
-                            new ProgressBarAsyncTask(mpMain).execute(progressBar);
+                            controlProgressBar = new ProgressBarAsyncTask(mpMain);
+                            controlProgressBar.execute(progressBar);
 
                         } catch(IOException ioe){
                             //todo

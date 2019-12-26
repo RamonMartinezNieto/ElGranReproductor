@@ -35,10 +35,6 @@ public class activity_musica_ejemplo extends AppCompatActivity  {
         adaptador_musica_ejemplo ame = new adaptador_musica_ejemplo(this, listaCanciones, mpMain);
         //Nota, el ListView pierde el foco y lo ganan los botones de reproducción
         lvListaMusica.setAdapter(ame);
-
-
-
-
     }
 
     @Override
