@@ -28,16 +28,31 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal"
-            android:gravity="center_horizontal">
+            android:orientation="vertical">
 
-            <Button
-                android:id="@+id/buttonPlayMusic"
-                style="@style/botones_musica_play" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal">
 
-            <Button
-                android:id="@+id/buttonPauseMusic"
-                style="@style/botones_musica_pause" />
+                <Button
+                    android:id="@+id/buttonPlayMusic"
+                    style="@style/botones_musica_play" />
+
+                <Button
+                    android:id="@+id/buttonPauseMusic"
+                    style="@style/botones_musica_pause" />
+
+            </LinearLayout>
+
+            <ProgressBar
+                android:id="@+id/progressBarMusicaEjemplo"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:progress="0"/>
+
         </LinearLayout>
 
 

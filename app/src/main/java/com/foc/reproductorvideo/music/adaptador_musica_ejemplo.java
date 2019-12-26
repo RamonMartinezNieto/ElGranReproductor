@@ -3,6 +3,8 @@ package com.foc.reproductorvideo.music;
 import android.content.Context;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.AsyncTask;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,12 +12,14 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.IOException;
 import java.util.ArrayList;
 
+import com.foc.reproductorvideo.MainActivity;
 import com.foc.reproductorvideo.R;
 
 
@@ -38,6 +42,8 @@ public class adaptador_musica_ejemplo extends BaseAdapter {
     Button btPlayMusica;
     MediaPlayer mediaplayer;
     Button btStopMusica;
+    ProgressBar progressBarMusicaEjemplo;
+    ArrayList<ProgressBar> barrasDeProgreso = new ArrayList<>();
 
     int idCancionPausada;
     int idCancionPlayed;
@@ -92,6 +98,12 @@ public class adaptador_musica_ejemplo extends BaseAdapter {
         TextView tvSubtituloCancion = v.findViewById(R.id.textViewSubtitulo);
         ImageView ivMiniatura = v.findViewById(R.id.imageViewMiniatura);
 
+        //Barra de progreso, se supone que le paso el progressBar que toca
+        progressBarMusicaEjemplo = v.findViewById(R.id.progressBarMusicaEjemplo);
+
+
+        barrasDeProgreso.add((ProgressBar)v.findViewById(R.id.progressBarMusicaEjemplo));
+
 
         //asigno los datos al TextView
         tvTituloCancion.setText(tituloActual);
@@ -103,14 +115,21 @@ public class adaptador_musica_ejemplo extends BaseAdapter {
         //Cargo el toggleButton y le asigno un listener para el botón (ojo que es para cada botón)
         btPlayMusica = (Button) v.findViewById(R.id.buttonPlayMusic);
         btPlayMusica.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
                 //cargar canción
                 String pathMusicaFileMuestra = "android.resource://com.foc.reproductorvideo/" + idCancion;
 
+                //busco el progressBar que toca
+                progressBarMusicaEjemplo = barrasDeProgreso.get(16);
+
                 if (idCancionPausada == idCancion) {
 
                     mediaplayer.start();
+                    //Nueva tarea Asincrona para el progress bar
+                    new newasinTask_cargar().execute(progressBarMusicaEjemplo);
+
 
                 } else {
 
@@ -135,6 +154,10 @@ public class adaptador_musica_ejemplo extends BaseAdapter {
                     idCancionPlayed = idCancion;
                     idCancionPausada = 0;
                     mediaplayer.start();
+
+                    //Ejecuto tarea async para el progress bar
+                    new newasinTask_cargar().execute(progressBarMusicaEjemplo);
+
                 }
             }
         });
@@ -159,6 +182,53 @@ public class adaptador_musica_ejemplo extends BaseAdapter {
 
         //devuelvo la vista
         return v;
+    }
+
+    public class newasinTask_cargar extends AsyncTask<ProgressBar, Integer, Void>{
+
+        int progreso;
+        ProgressBar pb;
+
+        @Override
+        protected void onPreExecute(){
+            progreso = 0;
+
+         }
+
+        @Override
+        protected Void doInBackground(ProgressBar... params){
+
+            this.pb = (ProgressBar) params[0];
+
+
+
+            while(progreso < 100){
+                progreso++;
+                //publico el progreso
+                publishProgress(progreso);
+                //lo duermo un poco
+                SystemClock.sleep(20);
+            }
+
+
+            return null;
+        }
+
+        @Override
+        protected void onProgressUpdate(Integer... values){
+            //pb.setProgress(values[0]);
+            if(pb != null) {
+                pb.setProgress(values[0]);
+            }
+        }
+
+        @Override
+        protected void onPostExecute(Void result){
+            //todo resultado on PostExecute.
+           // pb.setProgress(0);
+
+
+        }
     }
 
 }
