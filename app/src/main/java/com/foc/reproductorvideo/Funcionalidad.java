@@ -25,12 +25,12 @@ public class Funcionalidad {
     /**
      * Método para buscar el vídeo a cargar y ejecutarlo
      */
-    public void buscarArchivoCargar() {
+    public void buscarArchivoCargar(String tipo) {
         //Intent para seleccionar un contenido
         Intent i = new Intent ();
         i.setAction (Intent.ACTION_GET_CONTENT);
         //selecciono cualqueir tipo de archivo si no es formáto vídeo saldrá un Dialog diciendo que no se ha podido reproducir (por defecto)
-        i.setType ("*/*");
+        i.setType (tipo+"/*");
         i.addCategory (Intent.CATEGORY_OPENABLE);
 
         try {

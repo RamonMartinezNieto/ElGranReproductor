@@ -77,7 +77,7 @@ public class activity_musica_seleccion extends AppCompatActivity implements View
                         mpMain.reset ();
                     }
                     //llamo al método para buscar el archivo a cargar
-                    funcMusic.buscarArchivoCargar ();
+                    funcMusic.buscarArchivoCargar ("audio");
                 } else {
                     ActivityCompat.requestPermissions (this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, ID_PERMISOS_READ_EXTERNAL);
                 }
@@ -135,7 +135,7 @@ public class activity_musica_seleccion extends AppCompatActivity implements View
                 //En caso de que se le concedan los permisos se ejecutará el método para buscar el vídeo y cargarlo
                 if (grantResult[0] == (PackageManager.PERMISSION_GRANTED)) {
                     //llamo al método para buscar el archivo a cargar
-                    funcMusic.buscarArchivoCargar ();
+                    funcMusic.buscarArchivoCargar ("audio");
                 } else {
                     funcMusic.dialogoPermisos ("Error con los permisos","Debes de conceder los permisos para poder buscar un archivo.");
                 }
