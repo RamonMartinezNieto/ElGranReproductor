@@ -1,34 +1,23 @@
 package com.foc.reproductorvideo.video;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import android.Manifest;
-import android.content.ActivityNotFoundException;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
-import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.MediaController;
-import android.widget.RelativeLayout;
-import android.widget.Toast;
 import android.widget.VideoView;
 
 import com.foc.reproductorvideo.R;
@@ -217,19 +206,7 @@ public class reproductor_video_seleccion extends AppCompatActivity implements Vi
                     //buscarArchivoCargar();
                     funcVideo.buscarArchivoCargar();
                 } else {
-                    //Mensaje para que el usuario entienda que tiene que aceptar los permisos
-                    //Construyo el dialog a través del builder
-                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                    builder.setMessage("Debes de conceder los permisos para poder buscar un vídeo.").setTitle("Error con los Permisos");
-                    //Botón neutral del dialog ¿realmente es necesario el OnClickListener)
-                    builder.setNeutralButton("Entendido", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            //El botón no hace nada, solo es para que acepte y se vaya el AlertDialog
-                        }
-                    });
-                    AlertDialog dialog = builder.create();
-                    dialog.show();
+                    funcVideo.dialogoPermisos();
                 }
                 break;
         }

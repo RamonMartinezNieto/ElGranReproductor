@@ -3,6 +3,7 @@ package com.foc.reproductorvideo.music;
 import android.content.Context;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -122,7 +123,7 @@ public class adaptador_musica_ejemplo extends BaseAdapter  {
                 } else {
 
                     if (mediaplayer == null) {
-                       // mediaplayer = new MediaPlayer();
+                        mediaplayer = new MediaPlayer();
                     } else {
 
                         //Paro y vuelvo al estado Idle
@@ -161,19 +162,10 @@ public class adaptador_musica_ejemplo extends BaseAdapter  {
                         idCancionPausada = idCancion;
                     }
                 }
-
             }
         });
-
-
-        //TODO TENGO QUE PONER UN ON DESTROY // ON PAUSE !!!!!!!!!!
 
         //devuelvo la vista
         return v;
     }
-
-
-
-
-
 }

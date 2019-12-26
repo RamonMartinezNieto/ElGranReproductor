@@ -5,13 +5,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.widget.ListView;
-import android.widget.Toast;
 import java.util.ArrayList;
 import com.foc.reproductorvideo.R;
 
 
 /**
- * Clas que carga el ListView con ejemplos de canciones
+ * Clase activity que carga el ListView con ejemplos de canciones
  */
 public class activity_musica_ejemplo extends AppCompatActivity  {
 
@@ -27,6 +26,7 @@ public class activity_musica_ejemplo extends AppCompatActivity  {
         lvListaMusica = (ListView) findViewById(R.id.listViewEjemplos);
         mpMain = new MediaPlayer();
 
+        //Ejemplos añadidos manualmente, todo: lo correcto sería leer los arhicvos de la aplicación
         ArrayList<Cancion> listaCanciones = new ArrayList<>();
         listaCanciones.add(new Cancion("Grupo 1","Nombre canción 1", R.raw.cancion1, R.drawable.cancion1 ));
         listaCanciones.add(new Cancion("Grupo 2","Nombre canción 2", R.raw.cancion2, R.drawable.cancion2 ));
@@ -36,14 +36,24 @@ public class activity_musica_ejemplo extends AppCompatActivity  {
         adaptador_musica_ejemplo ame = new adaptador_musica_ejemplo(this, listaCanciones, mpMain);
         //Nota, el ListView pierde el foco y lo ganan los botones de reproducción
         lvListaMusica.setAdapter(ame);
+
     }
 
-    //Libero el media player en onDestroy
     @Override
-    protected void onDestroy(){
-        Toast.makeText(this, "onDestroy",Toast.LENGTH_SHORT).show();
+    protected void onPause(){
+        super.onPause();
 
-        super.onDestroy();
-        mpMain.release();
+        if(mpMain.isPlaying()){
+            mpMain.stop();
+            pausado = true;
+        }
+    }
+
+    @Override
+    protected void onResume(){
+        super.onResume();
+        if(pausado){
+            mpMain.start();
+        }
     }
 }

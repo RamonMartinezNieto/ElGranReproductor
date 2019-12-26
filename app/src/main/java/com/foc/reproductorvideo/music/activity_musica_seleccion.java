@@ -1,13 +1,10 @@
 package com.foc.reproductorvideo.music;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-
 import android.Manifest;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.media.MediaMetadataRetriever;
@@ -43,8 +40,6 @@ public class activity_musica_seleccion extends AppCompatActivity implements View
     private final int ID_PERMISOS_READ_EXTERNAL = 9999;
     private final int ID_RESULTADO_ARCHIVO = 8888;
 
-    Button buttonSelecionCancion;
-
     funcionalidad funcMusic;
 
     @Override
@@ -69,6 +64,7 @@ public class activity_musica_seleccion extends AppCompatActivity implements View
         //Objeto media player a utilizar
         mpMain = new MediaPlayer();
 
+        //Instancio objeto funcionalidad dónde tengo varios métodos
         funcMusic = new funcionalidad(this, this);
 
     }
@@ -78,12 +74,10 @@ public class activity_musica_seleccion extends AppCompatActivity implements View
 
         switch (v.getId()){
             case(R.id.buttonSelecionCancion):
-
                 if(ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED ) {
                     if(mpMain.isPlaying()){
                         mpMain.stop();
                         mpMain.reset();
-
                     }
                     //llamo al método para buscar el archivo a cargar
                     funcMusic.buscarArchivoCargar();
@@ -92,15 +86,16 @@ public class activity_musica_seleccion extends AppCompatActivity implements View
                     ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},ID_PERMISOS_READ_EXTERNAL);
                 }
                 break;
+
                 case(R.id.buttonPlayMusicSeleccion):
                     mpMain.start();
-
-                    //controlProgressBar = new ProgressBarAsyncTask(mpMain);
-                    //controlProgressBar.execute(progressBar);
+                    //todo
+                    new ProgressBarAsyncTask(mpMain).execute(progressBar);;
 
                 break;
 
                 case(R.id.buttonPauseMusicSeleccion):
+
                     if(mpMain.isPlaying()) {
                         mpMain.pause();
                         pausado = true;
@@ -114,7 +109,7 @@ public class activity_musica_seleccion extends AppCompatActivity implements View
         super.onPause();
         if(mpMain.isPlaying()) {
             mpMain.pause();
-            //mpMain.reset();
+            //todo tengo que controlar mejor la barra de progreso
             //progressBar.setProgress(0);
             pausado = true;
         }
@@ -123,7 +118,7 @@ public class activity_musica_seleccion extends AppCompatActivity implements View
     @Override
     protected void onResume(){
         super.onResume();
-        Toast.makeText(this, "onResume",Toast.LENGTH_SHORT).show();
+
         if(pausado){
             mpMain.start();
             pausado = false;
@@ -144,24 +139,10 @@ public class activity_musica_seleccion extends AppCompatActivity implements View
             case(ID_PERMISOS_READ_EXTERNAL):
                 //En caso de que se le concedan los permisos se ejecutará el método para buscar el vídeo y cargarlo
                 if(grantResult[0] == (PackageManager.PERMISSION_GRANTED)){
-
                     //llamo al método para buscar el archivo a cargar
                     funcMusic.buscarArchivoCargar();
-
                 } else {
-                    //Mensaje para que el usuario entienda que tiene que aceptar los permisos
-                    //Construyo el dialog a través del builder
-                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                    builder.setMessage("Debes de conceder los permisos para poder buscar un archivo.").setTitle("Error con los Permisos");
-                    //Botón neutral del dialog ¿realmente es necesario el OnClickListener)
-                    builder.setNeutralButton("Entendido", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            //El botón no hace nada, solo es para que acepte y se vaya el AlertDialog
-                        }
-                    });
-                    AlertDialog dialog = builder.create();
-                    dialog.show();
+                    funcMusic.dialogoPermisos();
                 }
                 break;
         }
@@ -192,16 +173,14 @@ public class activity_musica_seleccion extends AppCompatActivity implements View
                             txtNombreAlbum.setText(nombreAlbum);
                             txtNombreCancion.setText(tituloCancion);
 
-                            //cargo el media player con los datos devueltos todo-por algún motivo a petado aquí una vez
+                            //cargo el media player con los datos devueltos todo:por algún motivo a petado aquí una vez
                             mpMain.setDataSource(this, datos.getData());
 
                             mpMain.prepare();
                             mpMain.start();
 
-
                             //Ejecuto tarea async para el progress bar le paso por constructor un MediaPLayer y el progressbar en los parámetros async
-                            controlProgressBar = new ProgressBarAsyncTask(mpMain);
-                            controlProgressBar.execute(progressBar);
+                            new ProgressBarAsyncTask(mpMain).execute(progressBar);
 
                         } catch(IOException ioe){
                             //todo

@@ -20,7 +20,6 @@ public class funcionalidad {
 
     }
 
-
     /**
      * Método para buscar el vídeo a cargar y ejecutarlo
      */
@@ -33,7 +32,6 @@ public class funcionalidad {
         i.addCategory(Intent.CATEGORY_OPENABLE);
 
         try {
-
             activity.startActivityForResult(Intent.createChooser(i, "Seleccione un vídeo"), ID_RESULTADO_ARCHIVO);
 
         } catch (ActivityNotFoundException anfe) {
@@ -53,4 +51,22 @@ public class funcionalidad {
         }
     }
 
+    /**
+     * Mensje de advertencia al usuario, se le comunica que se requieren los permisos para poder
+     * cargar archivos
+     */
+    public void dialogoPermisos(){
+        //Construyo el dialog a través del builder
+        AlertDialog.Builder builder = new AlertDialog.Builder(this.context);
+        builder.setMessage("Debes de conceder los permisos para poder buscar un archivo.").setTitle("Error con los Permisos");
+        //Botón neutral del dialog ¿realmente es necesario el OnClickListener)
+        builder.setNeutralButton("Entendido", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                //El botón no hace nada, solo es para que acepte y se vaya el AlertDialog
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
 }

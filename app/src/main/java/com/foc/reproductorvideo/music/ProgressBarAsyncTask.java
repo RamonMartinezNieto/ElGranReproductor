@@ -2,29 +2,28 @@ package com.foc.reproductorvideo.music;
 
 import android.media.MediaPlayer;
 import android.os.AsyncTask;
-import android.util.Log;
 import android.widget.ProgressBar;
 
 public class ProgressBarAsyncTask extends AsyncTask<ProgressBar, Integer, Void> {
 
-        int progreso = 0;
-        ProgressBar pb;
-        double duracionMP = 0;
-
-        MediaPlayer mp;
+        private int progreso = 0;
+        private ProgressBar pb;
+        private double duracionMP = 0;
+        boolean enProceso = true;
+        private MediaPlayer mp;
 
         public ProgressBarAsyncTask(MediaPlayer mp){
             super();
-
             this.mp = mp;
         }
 
         @Override
         protected void onPreExecute(){
             progreso = 0;
+            enProceso = true;
+            //compruebo la duración en milisegundos
             duracionMP =  (double) mp.getDuration();
         }
-
 
         @Override
         protected Void doInBackground(ProgressBar... params){
@@ -33,14 +32,19 @@ public class ProgressBarAsyncTask extends AsyncTask<ProgressBar, Integer, Void> 
             //Duración en milisegundos partido 100
             double currentPosMP;
 
-            while(progreso < 100){
-                currentPosMP =  mp.getCurrentPosition();
+             enProceso = true;
 
-                progreso = (int) ( currentPosMP /  this.duracionMP * 100);
-
-                //publico el progreso
-                publishProgress(progreso);
-
+             while (enProceso) {
+                 while(mp.isPlaying()) {
+                    //recupero la posición actual en milisengudos
+                    currentPosMP = mp.getCurrentPosition();
+                    //Calculo los milisengudos para la barra de 100
+                    progreso = (int) (currentPosMP / this.duracionMP * 100);
+                    //publico el progreso
+                    publishProgress(progreso);
+                }
+                 enProceso = false;
+                 publishProgress(progreso);
             }
             return null;
         }
@@ -48,14 +52,12 @@ public class ProgressBarAsyncTask extends AsyncTask<ProgressBar, Integer, Void> 
         @Override
         protected void onProgressUpdate(Integer... values){
             if(pb != null) {
-
                 pb.setProgress(values[0]);
             }
         }
 
         @Override
         protected void onPostExecute(Void result){
-            pb.setProgress(0);
+            pb.setProgress(progreso);
         }
-
 }
