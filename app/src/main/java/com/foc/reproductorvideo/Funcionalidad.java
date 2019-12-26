@@ -57,10 +57,10 @@ public class Funcionalidad {
      * Mensje de advertencia al usuario, se le comunica que se requieren los permisos para poder
      * cargar archivos
      */
-    public void dialogoPermisos() {
+    public void dialogoPermisos(String titulo, String mensaje) {
         //Construyo el dialog a través del builder
         AlertDialog.Builder builder = new AlertDialog.Builder (this.context);
-        builder.setMessage ("Debes de conceder los permisos para poder buscar un archivo.").setTitle ("Error con los Permisos");
+        builder.setMessage (mensaje).setTitle(titulo);
         //Botón neutral del dialog ¿realmente es necesario el OnClickListener)
         builder.setNeutralButton ("Entendido", new DialogInterface.OnClickListener () {
             @Override

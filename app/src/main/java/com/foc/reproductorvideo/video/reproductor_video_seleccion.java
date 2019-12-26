@@ -202,7 +202,7 @@ public class reproductor_video_seleccion extends AppCompatActivity implements Vi
                     //buscarArchivoCargar();
                     funcVideo.buscarArchivoCargar ();
                 } else {
-                    funcVideo.dialogoPermisos ();
+                    funcVideo.dialogoPermisos ("Error con los permisos","Debes de conceder los permisos para poder buscar un archivo.");
                 }
                 break;
         }
@@ -224,18 +224,21 @@ public class reproductor_video_seleccion extends AppCompatActivity implements Vi
                     uri = datos.getData ();
                     //Para finalizar cargo el vídeo a través del URI
                     if (vv != null) {
-                        vv.setVideoURI (uri);
+                        try {
+                            vv.setVideoURI (uri);
+                            //Establezco un MediaController
+                            vv.setMediaController (new MediaController (this));
 
-                        //Establezco un MediaController
-                        vv.setMediaController (new MediaController (this));
+                            //Diferente configuración según orientación
+                            configuracionSegunOrientacion (uri);
 
-                        //Diferente configuración según orientación
-                        configuracionSegunOrientacion (uri);
-
-                        //El VideoView tendrá el foco
-                        vv.requestFocus ();
-                        //Ejecuto el vídeo
-                        vv.start ();
+                            //El VideoView tendrá el foco
+                            vv.requestFocus ();
+                            //Ejecuto el vídeo
+                            vv.start ();
+                        } catch(Exception e){
+                            funcVideo.dialogoPermisos ("Error con el formato.","Debes de seleccionar un archivo de vídeo.");
+                        }
                     }
                 }
                 break;

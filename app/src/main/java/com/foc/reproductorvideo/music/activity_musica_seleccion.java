@@ -137,7 +137,7 @@ public class activity_musica_seleccion extends AppCompatActivity implements View
                     //llamo al método para buscar el archivo a cargar
                     funcMusic.buscarArchivoCargar ();
                 } else {
-                    funcMusic.dialogoPermisos ();
+                    funcMusic.dialogoPermisos ("Error con los permisos","Debes de conceder los permisos para poder buscar un archivo.");
                 }
                 break;
         }
