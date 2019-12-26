@@ -16,9 +16,6 @@ import com.foc.reproductorvideo.R;
 
 /**
  * @author Ramón Martínez Nieto
- * Dni: 43188174-A
- * Programación multimedia de Dispositivos Móviles
- * Tarea 4
  */
 /**
  * Clase para reproducir un vídeo de ejemplo como recurso, esta clase diferencía entre el modo
