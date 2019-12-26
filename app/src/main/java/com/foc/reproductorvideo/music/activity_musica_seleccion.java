@@ -85,16 +85,14 @@ public class activity_musica_seleccion extends AppCompatActivity implements View
                         mpMain.stop();
                         mpMain.reset();
                     }
-
                     buscarArchivoCargar();
-
                 } else {
                     ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},ID_PERMISOS_READ_EXTERNAL);
                 }
                 break;
-
                 case(R.id.buttonPlayMusicSeleccion):
                     mpMain.start();
+                    new ProgressBarAsyncTask(mpMain).execute(progressBar);
                 break;
 
                 case(R.id.buttonPauseMusicSeleccion):
@@ -103,7 +101,15 @@ public class activity_musica_seleccion extends AppCompatActivity implements View
                     }
                 break;
         }
+    }
 
+    @Override
+    public void onPause(){
+        super.onPause();
+        if(mpMain.isPlaying()) {
+            mpMain.stop();
+            mpMain.reset();
+        }
     }
 
     /**
