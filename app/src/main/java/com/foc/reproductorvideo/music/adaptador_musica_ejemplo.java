@@ -118,9 +118,9 @@ public class adaptador_musica_ejemplo extends BaseAdapter  {
                 if (idCancionPausada == idCancion) {
 
                     mediaplayer.start();
-                    //Nueva tarea Asincrona para el progress bar
-                    new newasinTask_cargar().execute(progressBarMusicaEjemplo);
 
+                    //Ejecuto tarea async para el progress bar le paso por constructor un MediaPLayer y el progressbar en los parámetros async
+                    new ProgressBarAsyncTask(mediaplayer).execute(progressBarMusicaEjemplo);
 
                 } else {
 
@@ -146,8 +146,8 @@ public class adaptador_musica_ejemplo extends BaseAdapter  {
                     idCancionPausada = 0;
                     mediaplayer.start();
 
-                    //Ejecuto tarea async para el progress bar
-                    new newasinTask_cargar().execute(progressBarMusicaEjemplo);
+                    //Ejecuto tarea async para el progress bar le paso por constructor un MediaPLayer y el progressbar en los parámetros async
+                    new ProgressBarAsyncTask(mediaplayer).execute(progressBarMusicaEjemplo);
 
                 }
             }
@@ -176,59 +176,6 @@ public class adaptador_musica_ejemplo extends BaseAdapter  {
     }
 
 
-    /**
-     * Tarea async para controlar la barra de progreso
-     */
-    public class newasinTask_cargar extends AsyncTask<ProgressBar, Integer, Void>{
 
-        int progreso = 0;
-        ProgressBar pb;
-        double duracionMP = 0;
-
-        @Override
-        protected void onPreExecute(){
-            progreso = 0;
-            duracionMP =  (double) mediaplayer.getDuration();
-         }
-
-        @Override
-        protected Void doInBackground(ProgressBar... params){
-
-            this.pb = (ProgressBar) params[0];
-
-            //Duración en milisegundos partido 100
-            double currentPosMP;
-
-
-            while(progreso < 100){
-                currentPosMP =  mediaplayer.getCurrentPosition();
-
-                progreso = (int) ( currentPosMP /  this.duracionMP * 100);
-
-                //publico el progreso
-                publishProgress(progreso);
-
-            }
-
-
-            return null;
-        }
-
-        @Override
-        protected void onProgressUpdate(Integer... values){
-            if(pb != null) {
-
-                pb.setProgress(values[0]);
-            }
-        }
-
-        @Override
-        protected void onPostExecute(Void result){
-            //todo resultado on PostExecute.
-           pb.setProgress(0);
-
-
-        }
-    }
 
 }
