@@ -35,9 +35,6 @@
     </LinearLayout>
 
 
-    <include
-        layout="@layout/datos_autor"
-        tools:layout_editor_absoluteX="-110dp"
-        tools:layout_editor_absoluteY="78dp" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

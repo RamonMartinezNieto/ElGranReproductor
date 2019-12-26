@@ -34,7 +34,7 @@ import com.foc.reproductorvideo.R;
 /**
  * Clase Adaptador para cargar el ListView con vídeos de ejemplo
  */
-public class adaptador_musica_ejemplo extends BaseAdapter {
+public class adaptador_musica_ejemplo extends BaseAdapter  {
 
     private Context contexto;
     private ArrayList<Cancion> miMusica;
@@ -42,8 +42,6 @@ public class adaptador_musica_ejemplo extends BaseAdapter {
     Button btPlayMusica;
     MediaPlayer mediaplayer;
     Button btStopMusica;
-    ProgressBar progressBarMusicaEjemplo;
-    ArrayList<ProgressBar> barrasDeProgreso = new ArrayList<>();
 
     int idCancionPausada;
     int idCancionPlayed;
@@ -98,12 +96,8 @@ public class adaptador_musica_ejemplo extends BaseAdapter {
         TextView tvSubtituloCancion = v.findViewById(R.id.textViewSubtitulo);
         ImageView ivMiniatura = v.findViewById(R.id.imageViewMiniatura);
 
-        //Barra de progreso, se supone que le paso el progressBar que toca
-        progressBarMusicaEjemplo = v.findViewById(R.id.progressBarMusicaEjemplo);
-
-
-        barrasDeProgreso.add((ProgressBar)v.findViewById(R.id.progressBarMusicaEjemplo));
-
+        //cargo el ProgressBar como final para tener acceso desde los onClick
+        final ProgressBar progressBarMusicaEjemplo = v.findViewById(R.id.progressBarMusicaEjemplo);
 
         //asigno los datos al TextView
         tvTituloCancion.setText(tituloActual);
@@ -120,9 +114,6 @@ public class adaptador_musica_ejemplo extends BaseAdapter {
             public void onClick(View v) {
                 //cargar canción
                 String pathMusicaFileMuestra = "android.resource://com.foc.reproductorvideo/" + idCancion;
-
-                //busco el progressBar que toca
-                progressBarMusicaEjemplo = barrasDeProgreso.get(16);
 
                 if (idCancionPausada == idCancion) {
 
@@ -184,15 +175,20 @@ public class adaptador_musica_ejemplo extends BaseAdapter {
         return v;
     }
 
+
+    /**
+     * Tarea async para controlar la barra de progreso
+     */
     public class newasinTask_cargar extends AsyncTask<ProgressBar, Integer, Void>{
 
-        int progreso;
+        int progreso = 0;
         ProgressBar pb;
+        double duracionMP = 0;
 
         @Override
         protected void onPreExecute(){
             progreso = 0;
-
+            duracionMP =  (double) mediaplayer.getDuration();
          }
 
         @Override
@@ -200,14 +196,18 @@ public class adaptador_musica_ejemplo extends BaseAdapter {
 
             this.pb = (ProgressBar) params[0];
 
+            //Duración en milisegundos partido 100
+            double currentPosMP;
 
 
             while(progreso < 100){
-                progreso++;
+                currentPosMP =  mediaplayer.getCurrentPosition();
+
+                progreso = (int) ( currentPosMP /  this.duracionMP * 100);
+
                 //publico el progreso
                 publishProgress(progreso);
-                //lo duermo un poco
-                SystemClock.sleep(20);
+
             }
 
 
@@ -216,8 +216,8 @@ public class adaptador_musica_ejemplo extends BaseAdapter {
 
         @Override
         protected void onProgressUpdate(Integer... values){
-            //pb.setProgress(values[0]);
             if(pb != null) {
+
                 pb.setProgress(values[0]);
             }
         }
@@ -225,7 +225,7 @@ public class adaptador_musica_ejemplo extends BaseAdapter {
         @Override
         protected void onPostExecute(Void result){
             //todo resultado on PostExecute.
-           // pb.setProgress(0);
+           pb.setProgress(0);
 
 
         }

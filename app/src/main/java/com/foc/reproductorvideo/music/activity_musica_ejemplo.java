@@ -2,17 +2,10 @@ package com.foc.reproductorvideo.music;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
-import android.widget.ToggleButton;
-
 import java.util.ArrayList;
-
 import com.foc.reproductorvideo.R;
-import com.foc.reproductorvideo.music.Cancion;
+
 
 public class activity_musica_ejemplo extends AppCompatActivity  {
 
