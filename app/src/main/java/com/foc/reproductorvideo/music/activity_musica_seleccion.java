@@ -65,6 +65,14 @@ public class activity_musica_seleccion extends AppCompatActivity implements View
         //Objeto media player a utilizar
         mpMain = new MediaPlayer ();
 
+        mpMain.setOnCompletionListener (new MediaPlayer.OnCompletionListener (){
+            @Override
+            public void onCompletion (MediaPlayer mp) {
+                botonEnable (botonPlay);
+                botonDissable (botonPause);
+            }
+        });
+
         //Instancio objeto Funcionalidad dónde tengo varios métodos
         funcMusic = new Funcionalidad (this, this);
     }
@@ -115,8 +123,6 @@ public class activity_musica_seleccion extends AppCompatActivity implements View
             mpMain.pause ();
             botonDissable (botonPlay);
             botonEnable (botonPause);
-            //todo tengo que controlar mejor la barra de progreso
-            //progressBar.setProgress(0);
             pausado = true;
         }
     }
