@@ -19,6 +19,9 @@ import android.widget.Toast;
 import androidx.core.content.ContextCompat;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
 import com.foc.reproductorvideo.R;
 
 
@@ -41,6 +44,10 @@ public class adaptador_musica_ejemplo extends BaseAdapter {
 
     private Button botonAnteriorPlay;
     private Button botonAnteriorPause;
+
+    //HashMap para saber el estado de las canciones (key-idCancion / map-currentPosition
+    private HashMap<Integer, Integer> cancionesEnMarcha = new HashMap<> ();
+    private boolean segundaVez = false;
 
     //Constructor del adaptador
     public adaptador_musica_ejemplo (Context c, ArrayList<Cancion> listaCanciones, MediaPlayer mp, Activity activity) {
@@ -101,6 +108,9 @@ public class adaptador_musica_ejemplo extends BaseAdapter {
         //cargo el ProgressBar como final para tener acceso desde los onClick
         final ProgressBar progressBarMusicaEjemplo = v.findViewById (R.id.progressBarMusicaEjemplo);
 
+        //almaceno todas las canciones
+        cancionesEnMarcha.put (idCancion,1);
+
         //asigno los datos al TextView
         tvTituloCancion.setText (tituloActual);
         tvSubtituloCancion.setText (subtitulo);
@@ -141,14 +151,15 @@ public class adaptador_musica_ejemplo extends BaseAdapter {
                     new ProgressBarAsyncTask (mediaplayer).execute (progressBarMusicaEjemplo);
 
                 } else {
-
-                    if (mediaplayer == null) {
-                        mediaplayer = new MediaPlayer ();
-                    } else {
-                        //Paro y vuelvo al estado Idle
-                        mediaplayer.stop ();
-                        mediaplayer.reset ();
+                    //guardo el estado de la canción que se estaba reproduciendo anteirormente
+                    if(segundaVez) {
+                        cancionesEnMarcha.put (idCancionPlayed, mediaplayer.getCurrentPosition ());
                     }
+
+                    //Paro y vuelvo al estado Idle
+                    mediaplayer.stop ();
+                    mediaplayer.reset ();
+
 
                     try {
                         //Indico la dirección del recurso
@@ -162,6 +173,13 @@ public class adaptador_musica_ejemplo extends BaseAdapter {
                     idCancionPlayed = idCancion;
                     idCancionPausada = 0;
 
+                    //Seteo la posición de la canción en cuestión
+                    for(HashMap.Entry<Integer,Integer> i : cancionesEnMarcha.entrySet ()){
+                        if(idCancion == i.getKey ()){
+                            mediaplayer.seekTo (i.getValue ());
+                        }
+                    }
+
                     mediaplayer.start ();
                     botonDissable(btPlayMusica);
                     botonEnable (btStopMusica);
@@ -172,6 +190,7 @@ public class adaptador_musica_ejemplo extends BaseAdapter {
                     //Me guardo en una variable el botón
                     botonAnteriorPlay = btPlayMusica;
                     botonAnteriorPause = btStopMusica;
+                    segundaVez = true;
                 }
             }
         });
@@ -183,6 +202,8 @@ public class adaptador_musica_ejemplo extends BaseAdapter {
                     if (mediaplayer.isPlaying () && idCancionPlayed == idCancion) {
                         mediaplayer.pause ();
                         idCancionPausada = idCancion;
+
+                        cancionesEnMarcha.put (idCancion,mediaplayer.getCurrentPosition ());
                     }
                 }
                 botonEnable (btPlayMusica);
@@ -191,11 +212,19 @@ public class adaptador_musica_ejemplo extends BaseAdapter {
             }
         });
 
+        //Al completarse la canción
         mediaplayer.setOnCompletionListener (new MediaPlayer.OnCompletionListener (){
             @Override
             public void onCompletion (MediaPlayer mp) {
                 botonEnable (botonAnteriorPlay);
                 botonDissable (botonAnteriorPause);
+                Toast.makeText (contexto,"onCompletion",Toast.LENGTH_SHORT).show ();
+                //Reestablezco la posición a 0 cuando se ha completado la canción
+                for(HashMap.Entry<Integer,Integer> i : cancionesEnMarcha.entrySet ()){
+                    if(idCancion == i.getKey ()){
+                        mediaplayer.seekTo (0);
+                    }
+                }
             }
         });
         //devuelvo la vista
@@ -219,4 +248,5 @@ public class adaptador_musica_ejemplo extends BaseAdapter {
         bt.getBackground().setColorFilter(ContextCompat.getColor(contexto, R.color.colorButtonEnable), PorterDuff.Mode.MULTIPLY);
         bt.setClickable (true);
     }
+
 }
