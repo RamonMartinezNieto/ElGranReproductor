@@ -8,6 +8,7 @@ import androidx.core.content.ContextCompat;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.PorterDuff;
 import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -51,8 +52,10 @@ public class activity_musica_seleccion extends AppCompatActivity implements View
         //botones
         botonPlay = (Button) findViewById (R.id.buttonPlayMusicSeleccion);
         botonPlay.setOnClickListener (this);
+        botonDissable (botonPlay);
         botonPause = (Button) findViewById (R.id.buttonPauseMusicSeleccion);
         botonPause.setOnClickListener (this);
+        botonDissable (botonPause);
 
         txtNombreAlbum = (TextView) findViewById (R.id.textViewTituloSeleccion);
         txtNombreCancion = (TextView) findViewById (R.id.textViewSubtituloSeleccion);
@@ -75,6 +78,9 @@ public class activity_musica_seleccion extends AppCompatActivity implements View
                     if (mpMain.isPlaying ()) {
                         mpMain.stop ();
                         mpMain.reset ();
+
+                        botonDissable (botonPlay);
+                        botonDissable (botonPause);
                     }
                     //llamo al método para buscar el archivo a cargar
                     funcMusic.buscarArchivoCargar ("audio");
@@ -86,13 +92,16 @@ public class activity_musica_seleccion extends AppCompatActivity implements View
             case (R.id.buttonPlayMusicSeleccion):
                 mpMain.start ();
                 new ProgressBarAsyncTask (mpMain).execute (progressBar);
-                ;
+                botonDissable (botonPlay);
+                botonEnable (botonPause);
 
                 break;
 
             case (R.id.buttonPauseMusicSeleccion):
                 if (mpMain.isPlaying ()) {
                     mpMain.pause ();
+                    botonEnable (botonPlay);
+                    botonDissable (botonPause);
                     pausado = true;
                 }
                 break;
@@ -104,6 +113,8 @@ public class activity_musica_seleccion extends AppCompatActivity implements View
         super.onPause ();
         if (mpMain.isPlaying ()) {
             mpMain.pause ();
+            botonDissable (botonPlay);
+            botonEnable (botonPause);
             //todo tengo que controlar mejor la barra de progreso
             //progressBar.setProgress(0);
             pausado = true;
@@ -115,6 +126,8 @@ public class activity_musica_seleccion extends AppCompatActivity implements View
         super.onResume ();
         if (pausado) {
             mpMain.start ();
+            botonEnable (botonPause);
+            botonDissable (botonPlay);
             pausado = false;
         }
     }
@@ -173,6 +186,8 @@ public class activity_musica_seleccion extends AppCompatActivity implements View
 
                             mpMain.prepare ();
                             mpMain.start ();
+                            botonEnable (botonPause);
+                            botonDissable (botonPlay);
 
                             //Ejecuto tarea async para el progress bar le paso por constructor un MediaPLayer y el progressbar en los parámetros async
                             new ProgressBarAsyncTask (mpMain).execute (progressBar);
@@ -184,5 +199,23 @@ public class activity_musica_seleccion extends AppCompatActivity implements View
                 }
                 break;
         }
+    }
+
+    /**
+     * Para deshabilitar un botón
+     * @param bt
+     */
+    public void botonDissable(Button bt){
+        bt.getBackground().setColorFilter(ContextCompat.getColor(this, R.color.colorButtonDissable), PorterDuff.Mode.MULTIPLY);
+        bt.setClickable (false);
+    }
+
+    /**
+     * Para habilitar un botón
+     * @param bt
+     */
+    public void botonEnable(Button bt){
+        bt.getBackground().setColorFilter(ContextCompat.getColor(this, R.color.colorButtonEnable), PorterDuff.Mode.MULTIPLY);
+        bt.setClickable (true);
     }
 }
