@@ -44,6 +44,7 @@ public class ProgressBarAsyncTask extends AsyncTask<ProgressBar, Integer, Void> 
                 publishProgress (progreso);
             }
             enProceso = false;
+            progreso++;
             publishProgress (progreso);
         }
         return null;

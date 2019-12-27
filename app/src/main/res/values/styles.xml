@@ -53,7 +53,6 @@
     </style>
 
     <!-- Estilo imagen de fondo modo landscape -->
-
     <style name="imagenFondoLandscape" parent="imagenFondo">
         <item name="android:scaleX">2.5</item>
         <item name="android:scaleY">1</item>
@@ -84,7 +83,7 @@
     <style name="botonesPrincipales" parent="Widget.AppCompat.Button">
         <item name="android:focusable">true</item>
         <item name="android:clickable">true</item>
-        <item name="android:backgroundTint">#D23967C4</item>
+        <item name="android:backgroundTint">@color/colorButtonEnable</item>
         <item name="android:height">65dp</item>
         <item name="android:textColor">#D2FFFFFF</item>
         <item name="android:textStyle">bold</item>

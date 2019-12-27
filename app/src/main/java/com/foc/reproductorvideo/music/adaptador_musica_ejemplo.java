@@ -1,6 +1,8 @@
 package com.foc.reproductorvideo.music;
 
+import android.app.Activity;
 import android.content.Context;
+import android.graphics.PorterDuff;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.util.Log;
@@ -12,10 +14,11 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.core.content.ContextCompat;
 import java.io.IOException;
 import java.util.ArrayList;
-
 import com.foc.reproductorvideo.R;
 
 
@@ -29,20 +32,25 @@ import com.foc.reproductorvideo.R;
 public class adaptador_musica_ejemplo extends BaseAdapter {
 
     private Context contexto;
+    private Activity activity;
     private ArrayList<Cancion> miMusica;
 
-    private Button btPlayMusica;
     private MediaPlayer mediaplayer;
-    private Button btStopMusica;
-
     private int idCancionPausada;
     private int idCancionPlayed;
 
+    private Button botonAnteriorPlay;
+    private Button botonAnteriorPause;
+
     //Constructor del adaptador
-    public adaptador_musica_ejemplo (Context c, ArrayList<Cancion> listaCanciones, MediaPlayer mp) {
+    public adaptador_musica_ejemplo (Context c, ArrayList<Cancion> listaCanciones, MediaPlayer mp, Activity activity) {
         this.contexto = c;
         this.miMusica = listaCanciones;
         this.mediaplayer = mp;
+        this.activity = activity;
+
+        this.botonAnteriorPlay = null;
+        this.botonAnteriorPause = null;
     }
 
     @Override
@@ -101,17 +109,33 @@ public class adaptador_musica_ejemplo extends BaseAdapter {
         ivMiniatura.setImageResource (idMiniatura);
 
         //Cargo el toggleButton y le asigno un listener para el botón (ojo que es para cada botón)
-        btPlayMusica = (Button) v.findViewById (R.id.buttonPlayMusic);
+
+        final Button btStopMusica = (Button) v.findViewById (R.id.buttonPauseMusic);
+        //desactivo el botón de stop
+        botonDissable (btStopMusica);
+
+        final Button btPlayMusica = (Button) v.findViewById (R.id.buttonPlayMusic);
+        botonEnable (btPlayMusica);
+
         btPlayMusica.setOnClickListener (new View.OnClickListener () {
 
             @Override
             public void onClick (View v) {
+
+                //Compruebo los botones anteriores para devolverlos a su estado original
+                if(botonAnteriorPlay != null && botonAnteriorPause != null){
+                    botonEnable (botonAnteriorPlay);
+                    botonDissable (botonAnteriorPause);
+                }
+
                 //cargar canción
                 String pathMusicaFileMuestra = "android.resource://com.foc.reproductorvideo/" + idCancion;
 
                 if (idCancionPausada == idCancion) {
 
                     mediaplayer.start ();
+                    botonDissable(btPlayMusica);
+                    botonEnable (btStopMusica);
 
                     //Ejecuto tarea async para el progress bar le paso por constructor un MediaPLayer y el progressbar en los parámetros async
                     new ProgressBarAsyncTask (mediaplayer).execute (progressBarMusicaEjemplo);
@@ -121,7 +145,6 @@ public class adaptador_musica_ejemplo extends BaseAdapter {
                     if (mediaplayer == null) {
                         mediaplayer = new MediaPlayer ();
                     } else {
-
                         //Paro y vuelvo al estado Idle
                         mediaplayer.stop ();
                         mediaplayer.reset ();
@@ -133,20 +156,26 @@ public class adaptador_musica_ejemplo extends BaseAdapter {
                         mediaplayer.prepare ();
 
                     } catch (IOException ioe) {
-                        Log.e ("IOExceptionMusic", "error al cargar el archivo de música");
+                       Log.e ("IOExceptionMusic", "error al cargar el archivo de música");
                     }
 
                     idCancionPlayed = idCancion;
                     idCancionPausada = 0;
+
                     mediaplayer.start ();
+                    botonDissable(btPlayMusica);
+                    botonEnable (btStopMusica);
 
                     //Ejecuto tarea async para el progress bar le paso por constructor un MediaPLayer y el progressbar en los parámetros async
                     new ProgressBarAsyncTask (mediaplayer).execute (progressBarMusicaEjemplo);
+
+                    //Me guardo en una variable el botón
+                    botonAnteriorPlay = btPlayMusica;
+                    botonAnteriorPause = btStopMusica;
                 }
             }
         });
 
-        btStopMusica = (Button) v.findViewById (R.id.buttonPauseMusic);
         btStopMusica.setOnClickListener (new View.OnClickListener () {
             @Override
             public void onClick (View v) {
@@ -156,10 +185,38 @@ public class adaptador_musica_ejemplo extends BaseAdapter {
                         idCancionPausada = idCancion;
                     }
                 }
+                botonEnable (btPlayMusica);
+                botonDissable (btStopMusica);
+
             }
         });
 
+        mediaplayer.setOnCompletionListener (new MediaPlayer.OnCompletionListener (){
+            @Override
+            public void onCompletion (MediaPlayer mp) {
+                botonEnable (botonAnteriorPlay);
+                botonDissable (botonAnteriorPause);
+            }
+        });
         //devuelvo la vista
         return v;
+    }
+
+    /**
+     * Para deshabilitar un botón
+     * @param bt
+     */
+    public void botonDissable(Button bt){
+        bt.getBackground().setColorFilter(ContextCompat.getColor(contexto, R.color.colorButtonDissable), PorterDuff.Mode.MULTIPLY);
+        bt.setClickable (false);
+    }
+
+    /**
+     * Para habilitar un botón
+     * @param bt
+     */
+    public void botonEnable(Button bt){
+        bt.getBackground().setColorFilter(ContextCompat.getColor(contexto, R.color.colorButtonEnable), PorterDuff.Mode.MULTIPLY);
+        bt.setClickable (true);
     }
 }
