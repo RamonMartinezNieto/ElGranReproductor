@@ -40,6 +40,8 @@ public class ProgressBarAsyncTask extends AsyncTask<ProgressBar, Integer, Void> 
                 progreso = (int) (currentPosMP / this.duracionMP * 100);
                 //publico el progreso
                 publishProgress (progreso);
+
+                //compruebo si ha sido cancelada la tarea para salir
                 if(isCancelled ()){
                     break;
                 }
@@ -64,6 +66,8 @@ public class ProgressBarAsyncTask extends AsyncTask<ProgressBar, Integer, Void> 
     @Override
     protected void onCancelled(){
         //tarea finalizada almaceno el último progreso correcto
-        pb.setProgress (progresoAlmacenado);
+        if(pb != null) {
+            pb.setProgress (progresoAlmacenado);
+        }
     }
 }

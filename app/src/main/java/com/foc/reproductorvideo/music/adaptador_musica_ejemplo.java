@@ -84,7 +84,7 @@ public class adaptador_musica_ejemplo extends BaseAdapter {
      * @return
      */
     @Override
-    public View getView (int posicion, View convertView, ViewGroup parent) {
+    public View getView (int posicion, final View convertView, ViewGroup parent) {
 
         //cargo la lista
         View v = convertView;
@@ -122,6 +122,7 @@ public class adaptador_musica_ejemplo extends BaseAdapter {
 
 
         final Button btResetMusica = (Button) v.findViewById (R.id.buttonReset);
+        botonDissable (btResetMusica);
 
         final Button btStopMusica = (Button) v.findViewById (R.id.buttonPauseMusic);
         //desactivo el botón de stop
@@ -153,7 +154,11 @@ public class adaptador_musica_ejemplo extends BaseAdapter {
                         }
                     }
 
+
+
                     mediaplayer.start ();
+
+                    botonEnable (btResetMusica);
                     botonDissable(btPlayMusica);
                     botonEnable (btStopMusica);
 
@@ -163,7 +168,7 @@ public class adaptador_musica_ejemplo extends BaseAdapter {
 
                 } else {
                     //guardo el estado de la canción que se estaba reproduciendo anteirormente, solo cuando ya se cargó una vez
-                    //ya que la primera vez que entra la canción el dataSource no está cargado y me setea cosas raras
+                    //ya que la primera vez que entra la canción el dataSource no está cargado
                     if(segundaVez) {
                         cancionesEnMarcha.put (idCancionPlayed, mediaplayer.getCurrentPosition ());
                     }
@@ -172,11 +177,17 @@ public class adaptador_musica_ejemplo extends BaseAdapter {
                     if (mediaplayer.isPlaying ()) {
                         mediaplayer.stop ();
                         mediaplayer.reset ();
+                        mediaplayer.release ();
+                        mediaplayer = null;
 
                         if(pb != null) {
                             //cancelo el proceso del ProgressBar
                             pb.cancel (true);
                         }
+                    } else {
+                        mediaplayer.reset ();
+                        mediaplayer.release ();
+                        mediaplayer = null;
                     }
 
                     //cargo los datos como recurso interno, importante por que si no salta excepción si uso Uri
@@ -204,8 +215,11 @@ public class adaptador_musica_ejemplo extends BaseAdapter {
 
                     //Ejecuto tarea async para el progress bar le paso por constructor un MediaPLayer y el progressbar en los parámetros async
                     //new ProgressBarAsyncTask (mediaplayer).execute (progressBarMusicaEjemplo);
-                    pb = new ProgressBarAsyncTask (mediaplayer);
-                    pb.execute (progressBarMusicaEjemplo);
+                     pb = new ProgressBarAsyncTask (mediaplayer);
+                     pb.execute (progressBarMusicaEjemplo);
+
+
+                     botonEnable (btResetMusica);
                 }
             }
         });
@@ -215,7 +229,9 @@ public class adaptador_musica_ejemplo extends BaseAdapter {
             public void onClick (View v) {
                 if (mediaplayer != null) {
                     if (mediaplayer.isPlaying () && idCancionPlayed == idCancion) {
+
                         mediaplayer.pause ();
+
                         idCancionPausada = idCancion;
 
                         cancionesEnMarcha.put (idCancion,mediaplayer.getCurrentPosition ());
@@ -229,26 +245,47 @@ public class adaptador_musica_ejemplo extends BaseAdapter {
             }
         });
 
-        //todo
+
+        /**
+         * Al pulsar el botón reset
+         */
         btResetMusica.setOnClickListener (new View.OnClickListener (){
             @Override
             public void onClick(View v){
                 //Reseteo la canción en cuestión
                 for(HashMap.Entry<Integer,Integer> i : cancionesEnMarcha.entrySet ()){
 
-                    cancionesEnMarcha.put(idCancion,1);
+//                    cancionesEnMarcha.put(idCancion,0);
 
                     if(idCancionPlayed == idCancion) {
-                        mediaplayer.seekTo (0);
-                        mediaplayer.start ();
+                        if(mediaplayer.isPlaying ()) {
+                            mediaplayer.seekTo (0);
+                            mediaplayer.start ();
+
+                            botonDissable (btPlayMusica);
+                            botonEnable (btStopMusica);
+
+                            cancionesEnMarcha.put(idCancion,0);
+
+                            mediaplayer.start ();
+                            botonEnable (btResetMusica);
+                        }else{
+                            cancionesEnMarcha.put(idCancion,0);
+                            progressBarMusicaEjemplo.setProgress (0);
+
+                            botonDissable (btStopMusica);
+                            botonEnable (btPlayMusica);
+
+                            botonDissable (btResetMusica);
+
+                        }
+                    } else {
+                        cancionesEnMarcha.put(idCancion,0);
+                        progressBarMusicaEjemplo.setProgress (0);
+                        botonDissable (btResetMusica);
                     }
 
-                    //new ProgressBarAsyncTask (mediaplayer).execute (progressBarMusicaEjemplo);
-                    pb = new ProgressBarAsyncTask (mediaplayer);
-                    pb.execute (progressBarMusicaEjemplo);
-
                     segundaVez = true;
-
                 }
             }
         });
@@ -291,4 +328,15 @@ public class adaptador_musica_ejemplo extends BaseAdapter {
         bt.setClickable (true);
     }
 
+    public void botonEnableReset(Button bt, int idCancion){
+        for(HashMap.Entry<Integer,Integer> i : cancionesEnMarcha.entrySet ()){
+            if(idCancion == i.getKey ()){
+                mediaplayer.seekTo (i.getValue ());
+
+                if(i.getValue () != 0){
+                    botonEnable (bt);
+                }
+            }
+        }
+    }
 }
