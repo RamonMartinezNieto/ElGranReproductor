@@ -9,8 +9,9 @@ public class ProgressBarAsyncTask extends AsyncTask<ProgressBar, Integer, Void> 
     private int progreso = 0;
     private ProgressBar pb;
     private double duracionMP = 0;
-    boolean enProceso = true;
+
     private MediaPlayer mp;
+    private int progresoAlmacenado = 0;
 
     public ProgressBarAsyncTask (MediaPlayer mp) {
         super ();
@@ -20,7 +21,6 @@ public class ProgressBarAsyncTask extends AsyncTask<ProgressBar, Integer, Void> 
     @Override
     protected void onPreExecute () {
         progreso = 0;
-        enProceso = true;
         //compruebo la duración en milisegundos
         duracionMP = (double) mp.getDuration ();
     }
@@ -32,20 +32,20 @@ public class ProgressBarAsyncTask extends AsyncTask<ProgressBar, Integer, Void> 
         //Duración en milisegundos partido 100
         double currentPosMP;
 
-        enProceso = true;
-
-        while (enProceso) {
-            while (mp.isPlaying ()) {
+           while (mp.isPlaying ()) {
+                progresoAlmacenado = progreso;
                 //recupero la posición actual en milisengudos
                 currentPosMP = mp.getCurrentPosition ();
                 //Calculo los milisengudos para la barra de 100
                 progreso = (int) (currentPosMP / this.duracionMP * 100);
                 //publico el progreso
                 publishProgress (progreso);
-            }
-            enProceso = false;
+                if(isCancelled ()){
+                    break;
+                }
+           }
             publishProgress (progreso);
-        }
+
         return null;
     }
 
@@ -59,5 +59,11 @@ public class ProgressBarAsyncTask extends AsyncTask<ProgressBar, Integer, Void> 
     @Override
     protected void onPostExecute (Void result) {
         pb.setProgress (progreso);
+    }
+
+    @Override
+    protected void onCancelled(){
+        //tarea finalizada almaceno el último progreso correcto
+        pb.setProgress (progresoAlmacenado);
     }
 }

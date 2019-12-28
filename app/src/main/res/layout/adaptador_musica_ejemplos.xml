@@ -40,11 +40,19 @@
 
                 <Button
                     android:id="@+id/buttonPlayMusic"
-                    style="@style/botones_musica_play" />
+                    style="@style/botones_musica_play"
+                    android:layout_weight="1"/>
 
                 <Button
                     android:id="@+id/buttonPauseMusic"
-                    style="@style/botones_musica_pause" />
+                    style="@style/botones_musica_pause"
+                    android:layout_weight="1"/>
+
+                <Button
+                    android:id="@+id/buttonReset"
+                    style="@style/botones_musica_pause"
+                    android:layout_weight="1"
+                    android:text="R" />
 
             </LinearLayout>
 

@@ -20,7 +20,6 @@ import androidx.core.content.ContextCompat;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 
 import com.foc.reproductorvideo.R;
 
@@ -48,6 +47,7 @@ public class adaptador_musica_ejemplo extends BaseAdapter {
     //HashMap para saber el estado de las canciones (key-idCancion / map-currentPosition
     private HashMap<Integer, Integer> cancionesEnMarcha = new HashMap<> ();
     private boolean segundaVez = false;
+    private ProgressBarAsyncTask pb;
 
     //Constructor del adaptador
     public adaptador_musica_ejemplo (Context c, ArrayList<Cancion> listaCanciones, MediaPlayer mp, Activity activity) {
@@ -94,7 +94,7 @@ public class adaptador_musica_ejemplo extends BaseAdapter {
         v = li.inflate (R.layout.adaptador_musica_ejemplos, null);
 
         //extraigo los datos (esto es por cada iteración)
-        String tituloActual = miMusica.get (posicion).getTitulo ();
+        final String tituloActual = miMusica.get (posicion).getTitulo ();
         final int idCancion = miMusica.get (posicion).getIdCancion ();
         int idMiniatura = miMusica.get (posicion).getIdMiniatura ();
         String subtitulo = miMusica.get (posicion).getSubtitulo ();
@@ -120,6 +120,9 @@ public class adaptador_musica_ejemplo extends BaseAdapter {
 
         //Cargo el toggleButton y le asigno un listener para el botón (ojo que es para cada botón)
 
+
+        final Button btResetMusica = (Button) v.findViewById (R.id.buttonReset);
+
         final Button btStopMusica = (Button) v.findViewById (R.id.buttonPauseMusic);
         //desactivo el botón de stop
         botonDissable (btStopMusica);
@@ -127,12 +130,13 @@ public class adaptador_musica_ejemplo extends BaseAdapter {
         final Button btPlayMusica = (Button) v.findViewById (R.id.buttonPlayMusic);
         botonEnable (btPlayMusica);
 
+
         btPlayMusica.setOnClickListener (new View.OnClickListener () {
 
             @Override
             public void onClick (View v) {
 
-                //Compruebo los botones anteriores para devolverlos a su estado original
+                 //Compruebo los botones anteriores para devolverlos a su estado original
                 if(botonAnteriorPlay != null && botonAnteriorPause != null){
                     botonEnable (botonAnteriorPlay);
                     botonDissable (botonAnteriorPause);
@@ -142,37 +146,6 @@ public class adaptador_musica_ejemplo extends BaseAdapter {
                 String pathMusicaFileMuestra = "android.resource://com.foc.reproductorvideo/" + idCancion;
 
                 if (idCancionPausada == idCancion) {
-
-                    mediaplayer.start ();
-                    botonDissable(btPlayMusica);
-                    botonEnable (btStopMusica);
-
-                    //Ejecuto tarea async para el progress bar le paso por constructor un MediaPLayer y el progressbar en los parámetros async
-                    new ProgressBarAsyncTask (mediaplayer).execute (progressBarMusicaEjemplo);
-
-                } else {
-                    //guardo el estado de la canción que se estaba reproduciendo anteirormente
-                    if(segundaVez) {
-                        cancionesEnMarcha.put (idCancionPlayed, mediaplayer.getCurrentPosition ());
-                    }
-
-                    //Paro y vuelvo al estado Idle
-                    mediaplayer.stop ();
-                    mediaplayer.reset ();
-
-
-                    try {
-                        //Indico la dirección del recurso
-                        mediaplayer.setDataSource (v.getContext (), Uri.parse (pathMusicaFileMuestra));
-                        mediaplayer.prepare ();
-
-                    } catch (IOException ioe) {
-                       Log.e ("IOExceptionMusic", "error al cargar el archivo de música");
-                    }
-
-                    idCancionPlayed = idCancion;
-                    idCancionPausada = 0;
-
                     //Seteo la posición de la canción en cuestión
                     for(HashMap.Entry<Integer,Integer> i : cancionesEnMarcha.entrySet ()){
                         if(idCancion == i.getKey ()){
@@ -185,12 +158,54 @@ public class adaptador_musica_ejemplo extends BaseAdapter {
                     botonEnable (btStopMusica);
 
                     //Ejecuto tarea async para el progress bar le paso por constructor un MediaPLayer y el progressbar en los parámetros async
-                    new ProgressBarAsyncTask (mediaplayer).execute (progressBarMusicaEjemplo);
+                    pb = new ProgressBarAsyncTask (mediaplayer);
+                    pb.execute (progressBarMusicaEjemplo);
+
+                } else {
+                    //guardo el estado de la canción que se estaba reproduciendo anteirormente, solo cuando ya se cargó una vez
+                    //ya que la primera vez que entra la canción el dataSource no está cargado y me setea cosas raras
+                    if(segundaVez) {
+                        cancionesEnMarcha.put (idCancionPlayed, mediaplayer.getCurrentPosition ());
+                    }
+
+                    //Paro y vuelvo al estado Idle
+                    if (mediaplayer.isPlaying ()) {
+                        mediaplayer.stop ();
+                        mediaplayer.reset ();
+
+                        if(pb != null) {
+                            //cancelo el proceso del ProgressBar
+                            pb.cancel (true);
+                        }
+                    }
+
+                    //cargo los datos como recurso interno, importante por que si no salta excepción si uso Uri
+                    mediaplayer = MediaPlayer.create (v.getContext (),idCancion);
+
+                    idCancionPlayed = idCancion;
+                    idCancionPausada = 0;
+
+                    //Seteo la posición de la canción en cuestión
+                    for(HashMap.Entry<Integer,Integer> i : cancionesEnMarcha.entrySet ()){
+                        if(idCancion == i.getKey ()){
+                            mediaplayer.seekTo (i.getValue ());
+                        }
+                    }
+
+                    mediaplayer.start ();
+
+                    botonDissable(btPlayMusica);
+                    botonEnable (btStopMusica);
 
                     //Me guardo en una variable el botón
                     botonAnteriorPlay = btPlayMusica;
                     botonAnteriorPause = btStopMusica;
                     segundaVez = true;
+
+                    //Ejecuto tarea async para el progress bar le paso por constructor un MediaPLayer y el progressbar en los parámetros async
+                    //new ProgressBarAsyncTask (mediaplayer).execute (progressBarMusicaEjemplo);
+                    pb = new ProgressBarAsyncTask (mediaplayer);
+                    pb.execute (progressBarMusicaEjemplo);
                 }
             }
         });
@@ -204,6 +219,8 @@ public class adaptador_musica_ejemplo extends BaseAdapter {
                         idCancionPausada = idCancion;
 
                         cancionesEnMarcha.put (idCancion,mediaplayer.getCurrentPosition ());
+
+                        segundaVez = true;
                     }
                 }
                 botonEnable (btPlayMusica);
@@ -211,6 +228,31 @@ public class adaptador_musica_ejemplo extends BaseAdapter {
 
             }
         });
+
+        //todo
+        btResetMusica.setOnClickListener (new View.OnClickListener (){
+            @Override
+            public void onClick(View v){
+                //Reseteo la canción en cuestión
+                for(HashMap.Entry<Integer,Integer> i : cancionesEnMarcha.entrySet ()){
+
+                    cancionesEnMarcha.put(idCancion,1);
+
+                    if(idCancionPlayed == idCancion) {
+                        mediaplayer.seekTo (0);
+                        mediaplayer.start ();
+                    }
+
+                    //new ProgressBarAsyncTask (mediaplayer).execute (progressBarMusicaEjemplo);
+                    pb = new ProgressBarAsyncTask (mediaplayer);
+                    pb.execute (progressBarMusicaEjemplo);
+
+                    segundaVez = true;
+
+                }
+            }
+        });
+
 
         //Al completarse la canción
         mediaplayer.setOnCompletionListener (new MediaPlayer.OnCompletionListener (){
