@@ -3,10 +3,14 @@ package com.foc.reproductorvideo.music;
 import androidx.appcompat.app.AppCompatActivity;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Hashtable;
+import java.util.Map;
 
 import com.foc.reproductorvideo.R;
 
@@ -19,6 +23,8 @@ public class activity_musica_ejemplo extends AppCompatActivity {
     private ListView lvListaMusica;
     private MediaPlayer mpMain;
     private Boolean pausado = false;
+    private adaptador_musica_ejemplo ame;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,26 +41,54 @@ public class activity_musica_ejemplo extends AppCompatActivity {
         listaCanciones.add (new Cancion ("Grupo 3", "Nombre canción 3", R.raw.cancion3, R.drawable.cancion3));
         listaCanciones.add (new Cancion ("Grupo 4", "Nombre canción 4", R.raw.cancion4, R.drawable.cancion5));
 
-        adaptador_musica_ejemplo ame = new adaptador_musica_ejemplo (this, listaCanciones, mpMain,this);
+         ame = new adaptador_musica_ejemplo (this, listaCanciones, mpMain,this);
         //Nota, el ListView pierde el foco y lo ganan los botones de reproducción
         lvListaMusica.setAdapter (ame);
+
+
 
     }
 
     @Override
     protected void onPause() {
         super.onPause ();
-        if (mpMain.isPlaying ()) {
-            mpMain.stop ();
+        //busco el MediaPlayer en cuestión
+        mpMain = ame.getMediaPlayer ();
+
+        if(mpMain.isPlaying ()) {
+            //lo pauso
+            mpMain.pause ();
             pausado = true;
+        }
+
+        ArrayList<HashMap<String,Button>> listaBotones = ame.getButtons ();
+
+        for(int i = 0; i < listaBotones.size ();i++){
+            HashMap<String,Button> boton = listaBotones.get (i);
+            for(HashMap.Entry<String,Button> z : boton.entrySet()){
+                if(z.getKey ().equals ("play")){
+                    ame.botonEnable (z.getValue ());
+                } else if(z.getKey ().equals ("stop")) {
+                    ame.botonDissable (z.getValue ());
+                }
+            }
         }
     }
 
     @Override
     protected void onResume() {
         super.onResume ();
-        if (pausado) {
-            mpMain.start ();
+
+
+    }
+
+    @Override
+    protected void onDestroy(){
+        super.onDestroy ();
+        mpMain = ame.getMediaPlayer ();
+        if(mpMain != null){
+            mpMain.release ();
+            mpMain = null;
         }
     }
 }

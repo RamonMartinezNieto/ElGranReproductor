@@ -4,8 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.PorterDuff;
 import android.media.MediaPlayer;
-import android.net.Uri;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,11 +13,14 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.core.content.ContextCompat;
-import java.io.IOException;
+
+import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 
 import com.foc.reproductorvideo.R;
 
@@ -49,6 +50,9 @@ public class adaptador_musica_ejemplo extends BaseAdapter {
     private boolean segundaVez = false;
     private ProgressBarAsyncTask pb;
 
+    //array de los botones
+    ArrayList<HashMap<String,Button>> listaBotones = new ArrayList<> ();
+
     //Constructor del adaptador
     public adaptador_musica_ejemplo (Context c, ArrayList<Cancion> listaCanciones, MediaPlayer mp, Activity activity) {
         this.contexto = c;
@@ -58,6 +62,20 @@ public class adaptador_musica_ejemplo extends BaseAdapter {
 
         this.botonAnteriorPlay = null;
         this.botonAnteriorPause = null;
+    }
+
+    //Para coger el MediaPlayer
+    public MediaPlayer getMediaPlayer(){
+        return this.mediaplayer;
+    }
+
+    //para obtener todos los botones
+    public ArrayList getButtons(){
+        return this.listaBotones;
+    }
+
+    public void estadosBotones(){
+
     }
 
     @Override
@@ -121,16 +139,22 @@ public class adaptador_musica_ejemplo extends BaseAdapter {
         //Cargo el toggleButton y le asigno un listener para el botón (ojo que es para cada botón)
 
 
+        //HashMaps para el ArrayList
+        final HashMap<String,Button> botonPlay = new HashMap<> ();
+        final HashMap<String,Button> botonStop = new HashMap<> ();
+
         final Button btResetMusica = (Button) v.findViewById (R.id.buttonReset);
         botonDissable (btResetMusica);
 
         final Button btStopMusica = (Button) v.findViewById (R.id.buttonPauseMusic);
-        //desactivo el botón de stop
         botonDissable (btStopMusica);
+        botonStop.put ("stop",btStopMusica);
+        listaBotones.add (botonStop);
 
         final Button btPlayMusica = (Button) v.findViewById (R.id.buttonPlayMusic);
+        botonPlay.put ("play",btPlayMusica);
         botonEnable (btPlayMusica);
-
+        listaBotones.add (botonPlay);
 
         btPlayMusica.setOnClickListener (new View.OnClickListener () {
 
@@ -153,8 +177,6 @@ public class adaptador_musica_ejemplo extends BaseAdapter {
                             mediaplayer.seekTo (i.getValue ());
                         }
                     }
-
-
 
                     mediaplayer.start ();
 
@@ -217,7 +239,6 @@ public class adaptador_musica_ejemplo extends BaseAdapter {
                     //new ProgressBarAsyncTask (mediaplayer).execute (progressBarMusicaEjemplo);
                      pb = new ProgressBarAsyncTask (mediaplayer);
                      pb.execute (progressBarMusicaEjemplo);
-
 
                      botonEnable (btResetMusica);
                 }
@@ -306,9 +327,11 @@ public class adaptador_musica_ejemplo extends BaseAdapter {
                 }
             }
         });
-        //devuelvo la vista
+
+
         return v;
     }
+
 
     /**
      * Para deshabilitar un botón
@@ -326,17 +349,5 @@ public class adaptador_musica_ejemplo extends BaseAdapter {
     public void botonEnable(Button bt){
         bt.getBackground().setColorFilter(ContextCompat.getColor(contexto, R.color.colorButtonEnable), PorterDuff.Mode.MULTIPLY);
         bt.setClickable (true);
-    }
-
-    public void botonEnableReset(Button bt, int idCancion){
-        for(HashMap.Entry<Integer,Integer> i : cancionesEnMarcha.entrySet ()){
-            if(idCancion == i.getKey ()){
-                mediaplayer.seekTo (i.getValue ());
-
-                if(i.getValue () != 0){
-                    botonEnable (bt);
-                }
-            }
-        }
     }
 }
