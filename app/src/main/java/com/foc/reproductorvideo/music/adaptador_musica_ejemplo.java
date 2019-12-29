@@ -179,6 +179,7 @@ public class adaptador_musica_ejemplo extends BaseAdapter {
                     }
 
                     mediaplayer.start ();
+                    mediaplayer.setLooping (false);
 
                     botonEnable (btResetMusica);
                     botonDissable(btPlayMusica);
@@ -226,6 +227,7 @@ public class adaptador_musica_ejemplo extends BaseAdapter {
                     }
 
                     mediaplayer.start ();
+                    mediaplayer.setLooping (false);
 
                     botonDissable(btPlayMusica);
                     botonEnable (btStopMusica);
@@ -242,6 +244,28 @@ public class adaptador_musica_ejemplo extends BaseAdapter {
 
                      botonEnable (btResetMusica);
                 }
+
+                //Al completarse la canción todo NO SE ESTÄ PUITO LLAMANDO
+                mediaplayer.setOnCompletionListener (new MediaPlayer.OnCompletionListener (){
+                    @Override
+                    public void onCompletion (MediaPlayer mp) {
+
+                        //Reestablezco la posición a 0 cuando se ha completado la canción
+                        for(HashMap.Entry<Integer,Integer> i : cancionesEnMarcha.entrySet ()){
+
+                            mediaplayer.seekTo (0);
+
+                            botonEnable (btPlayMusica);
+                            botonDissable (btStopMusica);
+                            botonDissable (btResetMusica);
+
+                            cancionesEnMarcha.put(idCancion,0);
+
+                            pb.cancel (true);
+                            pb = new ProgressBarAsyncTask (mediaplayer);
+                        }
+                    }
+                });
             }
         });
 
@@ -276,12 +300,9 @@ public class adaptador_musica_ejemplo extends BaseAdapter {
                 //Reseteo la canción en cuestión
                 for(HashMap.Entry<Integer,Integer> i : cancionesEnMarcha.entrySet ()){
 
-//                    cancionesEnMarcha.put(idCancion,0);
-
                     if(idCancionPlayed == idCancion) {
                         if(mediaplayer.isPlaying ()) {
                             mediaplayer.seekTo (0);
-                            mediaplayer.start ();
 
                             botonDissable (btPlayMusica);
                             botonEnable (btStopMusica);
@@ -289,6 +310,8 @@ public class adaptador_musica_ejemplo extends BaseAdapter {
                             cancionesEnMarcha.put(idCancion,0);
 
                             mediaplayer.start ();
+                            mediaplayer.setLooping (false);
+
                             botonEnable (btResetMusica);
                         }else{
                             cancionesEnMarcha.put(idCancion,0);
@@ -310,24 +333,6 @@ public class adaptador_musica_ejemplo extends BaseAdapter {
                 }
             }
         });
-
-
-        //Al completarse la canción
-        mediaplayer.setOnCompletionListener (new MediaPlayer.OnCompletionListener (){
-            @Override
-            public void onCompletion (MediaPlayer mp) {
-                botonEnable (botonAnteriorPlay);
-                botonDissable (botonAnteriorPause);
-                Toast.makeText (contexto,"onCompletion",Toast.LENGTH_SHORT).show ();
-                //Reestablezco la posición a 0 cuando se ha completado la canción
-                for(HashMap.Entry<Integer,Integer> i : cancionesEnMarcha.entrySet ()){
-                    if(idCancion == i.getKey ()){
-                        mediaplayer.seekTo (0);
-                    }
-                }
-            }
-        });
-
 
         return v;
     }
