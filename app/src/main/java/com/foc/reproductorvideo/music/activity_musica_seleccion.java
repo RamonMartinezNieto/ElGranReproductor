@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.PorterDuff;
@@ -17,6 +18,7 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import java.io.IOException;
+import java.util.HashMap;
 
 import com.foc.reproductorvideo.Funcionalidad;
 import com.foc.reproductorvideo.R;
@@ -24,7 +26,6 @@ import com.foc.reproductorvideo.R;
 public class activity_musica_seleccion extends AppCompatActivity implements View.OnClickListener {
 
     private MediaPlayer mpMain;
-    private Uri uri;
     private Button botonSeleccionarMusica;
     private Button botonPlay;
     private Button botonPause;
@@ -176,16 +177,13 @@ public class activity_musica_seleccion extends AppCompatActivity implements View
                     //Para finalizar cargo el vídeo a través del URI
                     if (mpMain != null) {
                         try {
-                            MediaMetadataRetriever mmr = new MediaMetadataRetriever ();
-                            mmr.setDataSource (this, datos.getData ());
+                            HashMap<String,String> datosCancion = sacarDatosMetadatos(this,datos.getData ());
 
-                            String nombreAlbum = mmr.extractMetadata (MediaMetadataRetriever.METADATA_KEY_ALBUM);
-                            String tituloCancion = mmr.extractMetadata (MediaMetadataRetriever.METADATA_KEY_TITLE);
+                            for(HashMap.Entry<String,String> e : datosCancion.entrySet ()) {
+                                if(e.getKey ().equals ("titulo")) txtNombreAlbum.setText (e.getValue ());
+                                if(e.getKey ().equals ("cancion")) txtNombreCancion.setText (e.getValue ());
+                            }
 
-                            txtNombreAlbum.setText (nombreAlbum);
-                            txtNombreCancion.setText (tituloCancion);
-
-                            //cargo el media player con los datos devueltos todo:por algún motivo a petado aquí una vez
                             mpMain.setDataSource (this, datos.getData ());
 
                             mpMain.prepare ();
@@ -221,5 +219,26 @@ public class activity_musica_seleccion extends AppCompatActivity implements View
     public void botonEnable(Button bt){
         bt.getBackground().setColorFilter(ContextCompat.getColor(this, R.color.colorButtonEnable), PorterDuff.Mode.MULTIPLY);
         bt.setClickable (true);
+    }
+
+    /**
+     * Sacar los datos de los metadatos de una canción
+     * @param c
+     * @param u
+     * @return
+     */
+    public HashMap sacarDatosMetadatos(Context c, Uri u) {
+        HashMap<String,String> datosCancion = new HashMap<> ();
+
+        MediaMetadataRetriever mmr = new MediaMetadataRetriever ();
+        mmr.setDataSource (c, u);
+
+        String nombreAlbum = mmr.extractMetadata (MediaMetadataRetriever.METADATA_KEY_ALBUM);
+        String tituloCancion = mmr.extractMetadata (MediaMetadataRetriever.METADATA_KEY_TITLE);
+
+        datosCancion.put ("titulo",nombreAlbum);
+        datosCancion.put ("cancion",tituloCancion);
+
+        return datosCancion;
     }
 }

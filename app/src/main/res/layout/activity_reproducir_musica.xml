@@ -35,6 +35,12 @@
                 android:text="@string/musica_seleeccion"
                 />
 
+            <Button
+                android:id="@+id/buttonMusicaCargarArchivos"
+                style="@style/botones_musica"
+                android:text="@string/musica_cargar"
+                />
+
             <include layout="@layout/datos_autor"/>
 
         </LinearLayout>

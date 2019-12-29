@@ -35,6 +35,7 @@
     <string name="titulo_video_msuica">Seleccione una canción</string>
     <string name="seccion_construcción">Sección en consutrcción</string>
     <string name="seleccionar_cancion">Seleccionar canción</string>
+    <string name="musica_cargar">Reproduce tu música</string>
 
 
 </resources>

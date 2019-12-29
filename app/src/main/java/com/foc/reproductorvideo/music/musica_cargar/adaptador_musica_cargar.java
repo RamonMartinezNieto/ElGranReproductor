@@ -1,9 +1,11 @@
-package com.foc.reproductorvideo.music;
+package com.foc.reproductorvideo.music.musica_cargar;
 
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.PorterDuff;
+import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,17 +14,14 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
+
 import androidx.core.content.ContextCompat;
 
-import java.util.AbstractMap;
+import com.foc.reproductorvideo.R;
+import com.foc.reproductorvideo.music.ProgressBarAsyncTask;
+
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-
-import com.foc.reproductorvideo.R;
 
 
 /**
@@ -32,21 +31,21 @@ import com.foc.reproductorvideo.R;
 /**
  * Clase Adaptador para cargar el ListView con vídeos de ejemplo
  */
-public class adaptador_musica_ejemplo extends BaseAdapter {
+public class adaptador_musica_cargar extends BaseAdapter {
 
     private Context contexto;
     private Activity activity;
-    private ArrayList<Cancion> miMusica;
+    private ArrayList<CancioneCargar> miMusica;
 
     private MediaPlayer mediaplayer;
-    private int idCancionPausada;
-    private int idCancionPlayed;
+    private long idCancionPausada;
+    private long idCancionPlayed;
 
     private Button botonAnteriorPlay;
     private Button botonAnteriorPause;
 
     //HashMap para saber el estado de las canciones (key-idCancion / map-currentPosition
-    private HashMap<Integer, Integer> cancionesEnMarcha = new HashMap<> ();
+    private HashMap<Long, Integer> cancionesEnMarcha = new HashMap<> ();
     private boolean segundaVez = false;
     private ProgressBarAsyncTask pb;
 
@@ -54,7 +53,7 @@ public class adaptador_musica_ejemplo extends BaseAdapter {
     ArrayList<HashMap<String,Button>> listaBotones = new ArrayList<> ();
 
     //Constructor del adaptador
-    public adaptador_musica_ejemplo (Context c, ArrayList<Cancion> listaCanciones, MediaPlayer mp, Activity activity) {
+    public adaptador_musica_cargar (Context c, ArrayList<CancioneCargar> listaCanciones, MediaPlayer mp, Activity activity) {
         this.contexto = c;
         this.miMusica = listaCanciones;
         this.mediaplayer = mp;
@@ -113,15 +112,21 @@ public class adaptador_musica_ejemplo extends BaseAdapter {
 
         //extraigo los datos (esto es por cada iteración)
         final String tituloActual = miMusica.get (posicion).getTitulo ();
-        final int idCancion = miMusica.get (posicion).getIdCancion ();
-        int idMiniatura = miMusica.get (posicion).getIdMiniatura ();
-        String subtitulo = miMusica.get (posicion).getSubtitulo ();
+        final long idCancion = miMusica.get (posicion).getIdCancion ();
+
+        //todo cambiar miniatura
+        int idMiniatura = R.drawable.cancion1;
+
+        String artista = miMusica.get (posicion).getArtista ();
 
 
         //Busco el textView que hay en mi layout personalizado y el VideoView
         TextView tvTituloCancion = v.findViewById (R.id.textViewTitulo);
         TextView tvSubtituloCancion = v.findViewById (R.id.textViewSubtitulo);
         ImageView ivMiniatura = v.findViewById (R.id.imageViewMiniatura);
+
+        //cargar canción
+        final String pathMusicaFileMuestra = miMusica.get (posicion).getPath ();
 
         //cargo el ProgressBar como final para tener acceso desde los onClick
         final ProgressBar progressBarMusicaEjemplo = v.findViewById (R.id.progressBarMusicaEjemplo);
@@ -130,14 +135,13 @@ public class adaptador_musica_ejemplo extends BaseAdapter {
         cancionesEnMarcha.put (idCancion,1);
 
         //asigno los datos al TextView
-        tvTituloCancion.setText (tituloActual);
-        tvSubtituloCancion.setText (subtitulo);
+        tvTituloCancion.setText (artista);
+        tvSubtituloCancion.setText (tituloActual);
 
         //cargo la imagen en el ImageView a través de setImageResource con el id pasado
         ivMiniatura.setImageResource (idMiniatura);
 
         //Cargo el toggleButton y le asigno un listener para el botón (ojo que es para cada botón)
-
 
         //HashMaps para el ArrayList
         final HashMap<String,Button> botonPlay = new HashMap<> ();
@@ -167,12 +171,9 @@ public class adaptador_musica_ejemplo extends BaseAdapter {
                     botonDissable (botonAnteriorPause);
                 }
 
-                //cargar canción
-                String pathMusicaFileMuestra = "android.resource://com.foc.reproductorvideo/" + idCancion;
-
                 if (idCancionPausada == idCancion) {
                     //Seteo la posición de la canción en cuestión
-                    for(HashMap.Entry<Integer,Integer> i : cancionesEnMarcha.entrySet ()){
+                    for(HashMap.Entry<Long,Integer> i : cancionesEnMarcha.entrySet ()){
                         if(idCancion == i.getKey ()){
                             mediaplayer.seekTo (i.getValue ());
                         }
@@ -214,13 +215,13 @@ public class adaptador_musica_ejemplo extends BaseAdapter {
                     }
 
                     //cargo los datos como recurso interno, importante por que si no salta excepción si uso Uri
-                    mediaplayer = MediaPlayer.create (v.getContext (),idCancion);
+                    mediaplayer = MediaPlayer.create (contexto, Uri.parse (pathMusicaFileMuestra));
 
                     idCancionPlayed = idCancion;
                     idCancionPausada = 0;
 
                     //Seteo la posición de la canción en cuestión
-                    for(HashMap.Entry<Integer,Integer> i : cancionesEnMarcha.entrySet ()){
+                    for(HashMap.Entry<Long,Integer> i : cancionesEnMarcha.entrySet ()){
                         if(idCancion == i.getKey ()){
                             mediaplayer.seekTo (i.getValue ());
                         }
@@ -245,13 +246,13 @@ public class adaptador_musica_ejemplo extends BaseAdapter {
                      botonEnable (btResetMusica);
                 }
 
-                //Al completarse la canción todo NO SE ESTÄ PUITO LLAMANDO
+                //OnCompletionListener
                 mediaplayer.setOnCompletionListener (new MediaPlayer.OnCompletionListener (){
                     @Override
                     public void onCompletion (MediaPlayer mp) {
 
                         //Reestablezco la posición a 0 cuando se ha completado la canción
-                        for(HashMap.Entry<Integer,Integer> i : cancionesEnMarcha.entrySet ()){
+                        for(HashMap.Entry<Long,Integer> i : cancionesEnMarcha.entrySet ()){
 
                             mediaplayer.seekTo (0);
 
@@ -298,7 +299,7 @@ public class adaptador_musica_ejemplo extends BaseAdapter {
             @Override
             public void onClick(View v){
                 //Reseteo la canción en cuestión
-                for(HashMap.Entry<Integer,Integer> i : cancionesEnMarcha.entrySet ()){
+                for(HashMap.Entry<Long,Integer> i : cancionesEnMarcha.entrySet ()){
 
                     if(idCancionPlayed == idCancion) {
                         if(mediaplayer.isPlaying ()) {
@@ -354,5 +355,30 @@ public class adaptador_musica_ejemplo extends BaseAdapter {
     public void botonEnable(Button bt){
         bt.getBackground().setColorFilter(ContextCompat.getColor(contexto, R.color.colorButtonEnable), PorterDuff.Mode.MULTIPLY);
         bt.setClickable (true);
+    }
+
+    /**
+     * Sacar los datos de los metadatos de una canción
+     * @param c
+     * @param u
+     * @return
+     * TODO- aún no está en uso
+     */
+    public ArrayList<HashMap> sacarDatosMetadatos(Context c, Uri u) {
+        ArrayList<HashMap> datosCanciones = new ArrayList<> ();
+        HashMap<String,String> datosCancion = new HashMap<> ();
+
+        MediaMetadataRetriever mmr = new MediaMetadataRetriever ();
+        mmr.setDataSource (c, u);
+
+        String nombreAlbum = mmr.extractMetadata (MediaMetadataRetriever.METADATA_KEY_ALBUM);
+        String tituloCancion = mmr.extractMetadata (MediaMetadataRetriever.METADATA_KEY_TITLE);
+
+        datosCancion.put ("titulo",nombreAlbum);
+        datosCancion.put ("cancion",tituloCancion);
+
+        datosCanciones.add (datosCancion);
+
+        return datosCanciones;
     }
 }

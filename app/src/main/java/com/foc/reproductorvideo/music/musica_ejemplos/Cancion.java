@@ -1,4 +1,4 @@
-package com.foc.reproductorvideo.music;
+package com.foc.reproductorvideo.music.musica_ejemplos;
 
 /**
  * Clase para las canciones (se usa para las canciones de ejemplo)

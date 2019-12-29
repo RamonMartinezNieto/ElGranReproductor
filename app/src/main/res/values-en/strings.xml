@@ -35,6 +35,8 @@
     <string name="seccion_construcción">Section under construction</string>
     <string name="titulo_video_msuica">Choose a song</string>
     <string name="seleccionar_cancion">Coose a song</string>
+    <string name="musica_cargar">Play your songs</string>
+
 
 
 </resources>

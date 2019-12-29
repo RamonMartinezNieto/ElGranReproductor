@@ -1,16 +1,13 @@
-package com.foc.reproductorvideo.music;
+package com.foc.reproductorvideo.music.musica_ejemplos;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Hashtable;
-import java.util.Map;
 
 import com.foc.reproductorvideo.R;
 
