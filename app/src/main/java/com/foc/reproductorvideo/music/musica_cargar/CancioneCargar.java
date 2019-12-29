@@ -1,8 +1,6 @@
 package com.foc.reproductorvideo.music.musica_cargar;
 
 import android.graphics.Bitmap;
-import android.net.Uri;
-import android.widget.ImageView;
 
 public class CancioneCargar {
 
@@ -18,7 +16,6 @@ public class CancioneCargar {
         this.titulo=songTitle;
         this.artista=songArtist;
         this.iconoMusica = iconoMusica;
-
         this.uriCancion = path;
     }
 

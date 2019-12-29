@@ -18,12 +18,7 @@
                 style="@style/titulos_land"
                 android:text="@string/boton_reproducir_audio" />
 
-            <TextView
-                android:id="@+id/textView2"
-                style="@style/subtitulo_land"
-                android:text="@string/seccion_construcción" />
-
-            <Button
+                   <Button
                 android:id="@+id/buttonMusicaEjemplo"
                 style="@style/botones_musica"
                 android:text="@string/musica_ejemplo" />
@@ -32,8 +27,13 @@
                 android:id="@+id/buttonMusicaSeleccion"
                 style="@style/botones_musica"
                 android:text="@string/musica_seleeccion" />
+            <Button
+                android:id="@+id/buttonMusicaCargarArchivos"
+                style="@style/botones_musica"
+                android:text="@string/musica_cargar"
+                />
 
-            <include layout="@layout/datos_autor"/>
+
 
 
         </LinearLayout>

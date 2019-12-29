@@ -18,10 +18,7 @@
                 style="@style/titulos"
                 android:text="@string/boton_reproducir_audio" />
 
-            <TextView
-                android:id="@+id/textView2"
-                style="@style/subtitulo"
-                android:text="@string/seccion_construcción" />
+
 
             <Button
                 android:id="@+id/buttonMusicaEjemplo"

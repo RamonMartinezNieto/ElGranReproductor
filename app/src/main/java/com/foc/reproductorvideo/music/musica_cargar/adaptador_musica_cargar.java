@@ -23,6 +23,7 @@ import com.foc.reproductorvideo.music.ProgressBarAsyncTask;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Random;
 
 
 /**
@@ -92,6 +93,8 @@ public class adaptador_musica_cargar extends BaseAdapter {
     public long getItemId (int id) {
         return id;
     }
+
+
 
     /**
      * Construcción del adaptador personalizado
@@ -262,6 +265,17 @@ public class adaptador_musica_cargar extends BaseAdapter {
                             pb.cancel (true);
                             pb = new ProgressBarAsyncTask (mediaplayer);
                         }
+
+                        //todo con esto se queda en loop la misma canción
+                        //todo int para reproducir la siguiente canción. No se como hacerlo.
+                        int random = (int) Math.random ()*cancionesEnMarcha.size ();
+                        //simulo que se pulsa el botón //todo ¿Qué botón se pulsa? pues ninguno xD
+                        btPlayMusica.performClick();
+                        btPlayMusica.setPressed(true);
+                        btPlayMusica.invalidate();
+                        btPlayMusica.setPressed(false);
+                        btPlayMusica.invalidate();
+
                     }
                 });
             }
