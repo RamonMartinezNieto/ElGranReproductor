@@ -1,6 +1,8 @@
 package com.foc.reproductorvideo.music.musica_cargar;
 
+import android.graphics.Bitmap;
 import android.net.Uri;
+import android.widget.ImageView;
 
 public class CancioneCargar {
 
@@ -8,17 +10,22 @@ public class CancioneCargar {
     private String titulo;
     private String artista;
     private String uriCancion;
+    private Bitmap iconoMusica;
 
 
-    public CancioneCargar(long songID, String songTitle, String songArtist,String path) {
-        id=songID;
-        titulo=songTitle;
-        artista=songArtist;
+    public CancioneCargar(long songID, String songTitle, String songArtist,String path,Bitmap iconoMusica) {
+        this.id=songID;
+        this.titulo=songTitle;
+        this.artista=songArtist;
+        this.iconoMusica = iconoMusica;
+
         this.uriCancion = path;
     }
 
-    public long getIdCancion(){return id;}
-    public String getTitulo(){return titulo;}
-    public String getArtista(){return artista;}
-    public String getPath(){return uriCancion;}
+    public long getIdCancion(){return this.id;}
+    public String getTitulo(){return this.titulo;}
+    public String getArtista(){return this.artista;}
+    public String getPath(){return this.uriCancion;}
+    public Bitmap getIconoMusica(){ return this.iconoMusica; }
+
 }

@@ -6,16 +6,26 @@
     android:orientation="horizontal">
 
 
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center">
 
-    <ImageView
-        android:id="@+id/imageViewMiniatura"
-        style="@style/imageView_portrait"
-        app:srcCompat="@drawable/video_player" />
+        <ImageView
+            android:id="@+id/imageViewMiniatura"
+            style="@style/imageView_portrait"
+            app:srcCompat="@drawable/video_player" />
+
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center">
 
         <TextView
             android:id="@+id/textViewTitulo"

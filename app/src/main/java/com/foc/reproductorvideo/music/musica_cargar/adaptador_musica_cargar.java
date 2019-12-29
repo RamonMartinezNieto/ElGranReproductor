@@ -2,6 +2,7 @@ package com.foc.reproductorvideo.music.musica_cargar;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.PorterDuff;
 import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
@@ -113,12 +114,8 @@ public class adaptador_musica_cargar extends BaseAdapter {
         //extraigo los datos (esto es por cada iteración)
         final String tituloActual = miMusica.get (posicion).getTitulo ();
         final long idCancion = miMusica.get (posicion).getIdCancion ();
-
-        //todo cambiar miniatura
-        int idMiniatura = R.drawable.cancion1;
-
+        Bitmap idMiniatura = miMusica.get (posicion).getIconoMusica ();
         String artista = miMusica.get (posicion).getArtista ();
-
 
         //Busco el textView que hay en mi layout personalizado y el VideoView
         TextView tvTituloCancion = v.findViewById (R.id.textViewTitulo);
@@ -134,14 +131,14 @@ public class adaptador_musica_cargar extends BaseAdapter {
         //almaceno todas las canciones
         cancionesEnMarcha.put (idCancion,1);
 
+
         //asigno los datos al TextView
-        tvTituloCancion.setText (artista);
-        tvSubtituloCancion.setText (tituloActual);
-
+        //todo en ver de dejarlo en blanco se podría cargar el noombre del archivo
+        tvTituloCancion.setText ((artista.equals ("<unknown>")?"":artista));
+        tvSubtituloCancion.setText ((tituloActual.equals ("<unknown>")?"":tituloActual));
         //cargo la imagen en el ImageView a través de setImageResource con el id pasado
-        ivMiniatura.setImageResource (idMiniatura);
+        ivMiniatura.setImageBitmap (idMiniatura);
 
-        //Cargo el toggleButton y le asigno un listener para el botón (ojo que es para cada botón)
 
         //HashMaps para el ArrayList
         final HashMap<String,Button> botonPlay = new HashMap<> ();

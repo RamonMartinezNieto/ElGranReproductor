@@ -6,14 +6,21 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import android.Manifest;
 import android.content.ContentResolver;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.media.Image;
+import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import com.foc.reproductorvideo.Funcionalidad;
 import com.foc.reproductorvideo.R;
@@ -48,7 +55,7 @@ public class activity_cargar_canciones_archivos extends AppCompatActivity {
             //compruebo almacenamiento externo disponible
             if (isExternalStorageReadable ()) {
                 // cargo el array
-                cargarArchivosMusica ();
+                cargarArchivosMusica (this);
                 //cargo el adaptador
                 amc = new adaptador_musica_cargar (this, cancionesAlmacenadas, mpCargar, this);
                 //añado el adaptador al listView
@@ -78,7 +85,7 @@ public class activity_cargar_canciones_archivos extends AppCompatActivity {
                 //En caso de que se le concedan los permisos se ejecutará el método para buscar el vídeo y cargarlo
                 if (grantResult[0] == (PackageManager.PERMISSION_GRANTED)) {
                     // cargo el array
-                    cargarArchivosMusica ();
+                    cargarArchivosMusica (this);
                     //cargo el adaptador
                     amc = new adaptador_musica_cargar (this, cancionesAlmacenadas, mpCargar, this);
                     //añado el adaptador al listView
@@ -94,7 +101,7 @@ public class activity_cargar_canciones_archivos extends AppCompatActivity {
     /**
      * Método para cargar los archivos de música en el Array
      */
-    private void cargarArchivosMusica(){
+    private void cargarArchivosMusica(Context contexto){
 
         ContentResolver cancionesResolver = getContentResolver ();
         Uri cancionUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
@@ -114,7 +121,18 @@ public class activity_cargar_canciones_archivos extends AppCompatActivity {
                 String titulo = cancionCursor.getString (tituloColumna);
                 String artista = cancionCursor.getString (artistaColumna);
 
-                cancionesAlmacenadas.add (new CancioneCargar (id,titulo,artista,uri));
+                //Saco la imagen del album de los metadatos, le pongo uno por defecto
+                Bitmap bm = BitmapFactory.decodeResource (getResources (),R.drawable.icono_musica_miniatura);
+                MediaMetadataRetriever mmr = new MediaMetadataRetriever();
+                mmr.setDataSource(contexto,Uri.parse (uri));
+                byte[] artBytes =  mmr.getEmbeddedPicture();
+                if(artBytes!=null) {
+                    bm = BitmapFactory.decodeByteArray(artBytes, 0, artBytes.length);
+                }
+
+                //todo
+
+                cancionesAlmacenadas.add (new CancioneCargar (id,titulo,artista,uri,bm));
 
             }while(cancionCursor.moveToNext ());
         }
