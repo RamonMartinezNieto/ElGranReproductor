@@ -23,7 +23,6 @@ import com.foc.reproductorvideo.music.ProgressBarAsyncTask;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Random;
 
 
 /**
@@ -93,6 +92,7 @@ public class adaptador_musica_cargar extends BaseAdapter {
     public long getItemId (int id) {
         return id;
     }
+
 
 
 

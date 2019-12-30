@@ -11,8 +11,6 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.media.Image;
 import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -20,11 +18,9 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.ListView;
 import com.foc.reproductorvideo.Funcionalidad;
 import com.foc.reproductorvideo.R;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -105,6 +101,8 @@ public class activity_cargar_canciones_archivos extends AppCompatActivity {
 
         ContentResolver cancionesResolver = getContentResolver ();
         Uri cancionUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
+
+        //TODO query solo sirve para 8.0, tengo que cambiarlo
         Cursor cancionCursor  = cancionesResolver.query (cancionUri,null,null,null);
         String uri;
 
@@ -181,8 +179,6 @@ public class activity_cargar_canciones_archivos extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume ();
-
-
     }
 
     @Override
